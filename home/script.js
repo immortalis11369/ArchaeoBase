@@ -107,4 +107,8 @@ function rotateGradient(titleElement, colorA, colorB, rotationSpeed) {
     
     document.addEventListener('mousemove', handleMouseMove);
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c2466356910bde81f5dd2dbb80c4353c2123c350
