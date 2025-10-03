@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ArchaeoBase by Immortalis</title>
+  <link rel="stylesheet" href="home/style.css" />
+  <link rel="icon" href="assets/logo.png" type="image/png">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
+    <div class="nav-container">
+      <div class="nav-logo"><img id="logo" title="logo" src="assets/glogo.png"><h3 id="navtitle">Immortalis </h3></div>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#intro" class="nav-link active">Buscar</a></li>
+        <li><a href="abouts/about-project.html" class="nav-link">Sobre o Site</a></li>
+        <li><a href="abouts/about-project.html#about-team" class="nav-link">Sobre Nós</a></li>
+        <li><a href="abouts/about-project.html#about-project" class="nav-link" target="_blank" rel="noopener">Sobre o Projeto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="intro" tabindex="-1">
+    <div class="sections-bg intro-bg">
+      <h1 id="title">ArchaeoBase by Immortalis</h1>
+      <p id="subtitle">Descubra artefatos usando nossa busca inteligente por tags. Explore a história de uma forma inédita.
+        <i><br>De quais maneiras a tecnologia e a creatividade podem ajudar a aumentar a comunicação no contexto arqueológico, auxiliando na padronização dos processos como catalogação, datação, identificação e excavação?</i>
+      </p>
+      <form onsubmit="event.preventDefault(); alertSearch();" role="search">
+        <input type="search" id="searchInput" placeholder="Busque artefatos por tags, ano, cultura..." aria-label="Buscar artefatos" />
+        <button type="submit" id="btnSubmit">Buscar</button>
+      </form>
+    </div>
+  </section>
+
+  <footer id="footer" role="contentinfo" tabindex="-1" class="footer-section">
+    <div class="footer-container">
+      <h3><strong>IMMORTALIS!</strong></h3>
+      <p>FIRST Age</p>
+      <p>FIRST <i>LEGO</i> League <strong>Challenge</strong></p>
+      <p><em>UNEARTHED 25-26</em></p>
+      <p><a href="https://www.instagram.com/equipe_immortalis/">@equipe_immortalis</a></p>
+      <p><a href="mailto:equipeimmortalis5821@gmail.com">equipeimmortalis5821@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script src="home/script.js"></script>
+</body>
+</html>
