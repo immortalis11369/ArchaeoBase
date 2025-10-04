@@ -45,7 +45,7 @@ function updateNavbarBackground() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  rotateGradient(document.getElementById('title'), 'var(--gold-light)', '#e77f3f', 1.5);
+  rotateGradient(document.getElementById('title'), 'var(--gold-light)', '#ba6028ff', 1.5);
   rotateGradient(document.getElementById('subtitle'), '#ffffff', '#feb47b', 0.8);
   rotateGradient(document.getElementById('btnSubmit'), 'var(--gold-dark)', '#ffe749ff', 2);
   updateNavbarBackground();
