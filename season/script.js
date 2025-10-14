@@ -124,10 +124,10 @@ function adjustTimelineContentSizes() {
             emoji = '📝'; // Memo for short content
         } else if (charCount < 400) {
             sizeClass = 'medium';
-            emoji = '📄'; // Page for medium content
+            emoji = '📄';
         } else if (charCount < 600) {
             sizeClass = 'long';
-            emoji = '📄📄'; // Two pages for long content
+            emoji = '🔎';
         } else {
             sizeClass = 'extra-long';
             emoji = '📚'; // Books for extra long content
