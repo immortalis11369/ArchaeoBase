@@ -10,7 +10,6 @@ const resultsContainer = document.getElementById('resultsContainer');
 
 let artifactsData = [];
 
-// Load artifacts data
 async function loadArtifacts() {
     try {
         const response = await fetch('../ArchaeoBase/data/artifacts.json');
