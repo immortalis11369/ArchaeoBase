@@ -16,6 +16,7 @@ async function loadArtifacts() {
         const response = await fetch('data/artifacts.json');
         const data = await response.json();
         artifactsData = data.artifacts;
+        console.log('Artifacts loaded:', artifactsData); // Debug log
     } catch (error) {
         console.error('Error loading artifacts:', error);
     }
@@ -26,8 +27,9 @@ function searchArtifacts(query) {
     if (!query.trim()) return [];
 
     const searchTerm = query.toLowerCase().trim();
+    console.log('Searching for:', searchTerm); // Debug log
     
-    return artifactsData.filter(artifact => {
+    const results = artifactsData.filter(artifact => {
         // Search in name
         if (artifact.name.toLowerCase().includes(searchTerm)) return true;
         
@@ -42,6 +44,9 @@ function searchArtifacts(query) {
         
         return false;
     });
+
+    console.log('Found results:', results); // Debug log
+    return results;
 }
 
 // Display search results
@@ -51,8 +56,8 @@ function displayResults(results) {
     if (results.length === 0) {
         resultsContainer.innerHTML = `
             <div class="no-results">
-                <p>Nenhuma peça LEGO encontrada para sua busca.</p>
-                <p>Tente usar termos como: "L", "preto", "lego", etc.</p>
+                <p>Nenhum artefato encontrado para sua busca.</p>
+                <p>Tente usar termos como: "lego", "L", "preto", etc.</p>
             </div>
         `;
         return;
@@ -91,6 +96,7 @@ function viewArtifactDetails(artifactId) {
 // Handle search form submission
 function handleSearch(event) {
     event.preventDefault();
+    console.log('Form submitted'); // Debug log
     
     const query = searchInput.value.trim();
     if (!query) {
@@ -108,10 +114,14 @@ function handleSearch(event) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOM loaded'); // Debug log
     await loadArtifacts();
     
     // Search form event listener
-    searchForm.addEventListener('submit', handleSearch);
+    if (searchForm) {
+        searchForm.addEventListener('submit', handleSearch);
+        console.log('Search form event listener attached'); // Debug log
+    }
     
     // Initialize other functions
     rotateGradient(document.getElementById('title'), 'var(--gold-light)', '#ba6028ff', 1.5);
@@ -156,9 +166,11 @@ navLinks.forEach(link => {
 });
 
 function updateNavbarBackground() {
-  navbar.style.background = 'var(--white)';
-  navbar.style.color = 'var(--black)';
-  navbar.style.backdropFilter = 'none';
+  if (navbar) {
+    navbar.style.background = 'var(--white)';
+    navbar.style.color = 'var(--black)';
+    navbar.style.backdropFilter = 'none';
+  }
 }
 
 function rotateGradient(titleElement, colorA, colorB, rotationSpeed) {
