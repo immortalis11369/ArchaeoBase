@@ -106,72 +106,71 @@
   <script>
     async function loadArtifactDetails() {
         const urlParams = new URLSearchParams(window.location.search);
-        const artifactId = urlParams.get('id');
+        const artifactIndex = urlParams.get('index');
 
-        if (!artifactId) {
-            const content = document.getElementById('artifactContent')
-            if (!content) {
-                console.error('artifactContent not found! Current existing divs are:')
-                document.querySelectorAll('div').forEach(div => {
-                    console.warn(div.id)
-                });
-                return;
-            }
-            content.innerHTML = '<p>ID do artefato não especificado na URL.</p>';
+        const artifactContent = document.getElementById('artifactContent');
+        
+        if (!artifactContent) {
+            console.error('artifactContent element not found');
+            return;
+        }
+
+        if (!artifactIndex) {
+            artifactContent.innerHTML = '<p>Índice do artefato não especificado na URL.</p>';
             return;
         }
 
         try {
             const response = await fetch('../ArchaeoBase/data/artifacts.json');
             const data = await response.json();
-            const artifact = data.artifacts.find(a => a.id == artifactId);
+            const artifact = data.artifacts[artifactIndex];
 
             if (!artifact) {
-                document.getElementById('artifactContent').innerHTML = '<p>Peça LEGO não encontrada.</p>';
+                artifactContent.innerHTML = '<p>Peça LEGO não encontrada.</p>';
                 return;
             }
 
             document.title = `${artifact.name} - ArchaeoBase LEGO`;
             
             const content = `
-                <div class="artifact-header">
+            <div class="artifact-header">
                 <h1>${artifact.name}</h1>
-                </div>
-                
-                <div class="artifact-info">
+            </div>
+            
+            <div class="artifact-info">
                 <img src="${artifact.img}" alt="${artifact.name}" class="artifact-image">
 
                 <div class="info-item">
-                    <strong>Descrição</strong>
-                    <p>${artifact.description}</p>
+                <strong>Descrição</strong>
+                <p>${artifact.description}</p>
                 </div>
 
                 ${artifact.alias.length > 0 ? `
                 <div class="info-item">
-                    <strong>Também conhecida como</strong>
-                    <div class="artifact-tags">
+                <strong>Também conhecida como</strong>
+                <div class="artifact-tags">
                     ${artifact.alias.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
-                    </div>
+                </div>
                 </div>
                 ` : ''}
 
                 <div class="info-item">
-                    <strong>Tags e Características</strong>
-                    <div class="artifact-tags">
+                <strong>Tags e Características</strong>
+                <div class="artifact-tags">
                     ${artifact.tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
-                    </div>
                 </div>
                 </div>
+            </div>
             `;
 
-            document.getElementById('artifactContent').innerHTML = content;
+            artifactContent.innerHTML = content;
         } catch (error) {
             console.error('Error loading LEGO piece details:', error);
-            document.getElementById('artifactContent').innerHTML = '<p>Erro ao carregar detalhes da peça LEGO.</p>';
+            artifactContent.innerHTML = '<p>Erro ao carregar detalhes da peça LEGO.</p>';
         }
-        }
+    }
 
-        document.addEventListener('DOMContentLoaded', loadArtifactDetails);
+    document.addEventListener('DOMContentLoaded', loadArtifactDetails);
   </script>
 </body>
 </html>
