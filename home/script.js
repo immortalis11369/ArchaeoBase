@@ -18,7 +18,6 @@ async function loadArtifacts() {
         artifactsData = data.artifacts;
         console.log('Artifacts loaded:', artifactsData); // Debug log
     } catch (error) {
-        console.warn("a")
         console.error('Error loading artifacts:', error);
     }
 }
