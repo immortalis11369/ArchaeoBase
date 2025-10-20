@@ -105,7 +105,6 @@
   </footer>
 
   <script>
-    // Load and display artifact details
     async function loadArtifactDetails() {
       const urlParams = new URLSearchParams(window.location.search);
       const artifactId = urlParams.get('id');
@@ -116,7 +115,7 @@
       }
 
       try {
-        const response = await fetch('data/artifacts.json');
+        const response = await fetch('../ArchaeoBase/data/artifacts.json');
         const data = await response.json();
         const artifact = data.artifacts.find(a => a.id == artifactId);
 
@@ -125,7 +124,7 @@
           return;
         }
 
-        document.title = `${artifact.name} - ArchaeoBase LEGO`;
+        document.title = `${artifact.name} - ArchaeoBase by Immortalis`;
         
         const content = `
           <div class="artifact-header">
