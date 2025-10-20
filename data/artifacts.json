@@ -1,12 +1,13 @@
 {
-    "1": {
+    "artifacts": [
+    {
         "alias": [],
         "name": "...",
         "description": "...",
         "img": "../../assets/imgs",
         "tags": []
     },
-    "2": {
+    {
         "alias": [
             "L 2x4",
             "L Pequeno"
@@ -15,4 +16,5 @@
         "description": "Uma peça preta que tem um formato semelhante a um L, também possui uma entrada em formato de + para eixos. Muito usada. A peça foi criada em 1999. Existiu em 1111 sets de lego nesses 26 anos.",
         "img": "../../assets/imgs/2.jpg"
     }   
+]
 }
