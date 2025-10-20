@@ -15,7 +15,7 @@ async function loadArtifacts() {
     try {
         const response = await fetch('../data/artifacts.json');
         const data = await response.json();
-        artifactsData = data;
+        artifactsData = data.artifacts;
         console.log('Artifacts loaded:', artifactsData); // Debug log
     } catch (error) {
         console.warn("a")
