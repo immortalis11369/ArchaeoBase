@@ -13,7 +13,8 @@ let artifactsData = [];
 // Load artifacts data
 async function loadArtifacts() {
     try {
-        const data = require("../data/artifacts.json")
+        const response = await fetch('../data/artifacts.json');
+        const data = await response.json();
         artifactsData = data;
         console.log('Artifacts loaded:', artifactsData); // Debug log
     } catch (error) {
