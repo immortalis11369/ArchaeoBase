@@ -71,7 +71,7 @@ function displayResults(results) {
         `;
         
         card.addEventListener('click', () => {
-            viewArtifactDetails(artifact.id);
+            viewArtifactDetails(card.dataset.artifactIndex);
         });
         
         resultsContainer.appendChild(card);
