@@ -4,7 +4,7 @@
         "alias": [],
         "name": "...",
         "description": "...",
-        "img": "../../assets/imgs",
+        "img": "../ArchaeoBase/assets/imgs",
         "tags": []
     },
     {
@@ -14,7 +14,7 @@
         ],
         "name": "Lego 32140 Black",
         "description": "Uma peça preta que tem um formato semelhante a um L, também possui uma entrada em formato de + para eixos. Muito usada. A peça foi criada em 1999. Existiu em 1111 sets de lego nesses 26 anos.",
-        "img": "../../assets/imgs/2.jpg",
+        "img": "../ArchaeoBase/assets/imgs/2.jpg",
         "tags": [
             "preto", "L", "L pequeno", "L 2x4", "1199", "1111 sets", "pequeno"
         ]
