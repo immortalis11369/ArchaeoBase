@@ -10,12 +10,12 @@ const resultsContainer = document.getElementById('resultsContainer');
 
 let artifactsData = [];
 
+// Load artifacts data
 async function loadArtifacts() {
     try {
-        const response = await fetch('../ArchaeoBase/data/artifacts.json');
+        const response = await fetch('data/artifacts.json');
         const data = await response.json();
         artifactsData = data.artifacts;
-        console.log('Artifacts loaded:', artifactsData); // Debug log
     } catch (error) {
         console.error('Error loading artifacts:', error);
     }
@@ -26,9 +26,8 @@ function searchArtifacts(query) {
     if (!query.trim()) return [];
 
     const searchTerm = query.toLowerCase().trim();
-    console.log('Searching for:', searchTerm); // Debug log
     
-    const results = artifactsData.filter(artifact => {
+    return artifactsData.filter(artifact => {
         // Search in name
         if (artifact.name.toLowerCase().includes(searchTerm)) return true;
         
@@ -43,9 +42,6 @@ function searchArtifacts(query) {
         
         return false;
     });
-
-    console.log('Found results:', results); // Debug log
-    return results;
 }
 
 // Display search results
@@ -95,7 +91,6 @@ function viewArtifactDetails(artifactId) {
 // Handle search form submission
 function handleSearch(event) {
     event.preventDefault();
-    console.log('Form submitted'); // Debug log
     
     const query = searchInput.value.trim();
     if (!query) {
@@ -113,13 +108,11 @@ function handleSearch(event) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM loaded'); // Debug log
     await loadArtifacts();
     
     // Search form event listener
     if (searchForm) {
         searchForm.addEventListener('submit', handleSearch);
-        console.log('Search form event listener attached'); // Debug log
     }
     
     // Initialize other functions
