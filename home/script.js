@@ -35,6 +35,11 @@ function searchArtifacts(query) {
 }
 
 function displayResults(results) {
+    if (!resultsContainer) {
+        console.error('resultsContainer element not found');
+        return;
+    }
+    
     resultsContainer.innerHTML = '';
     currentResults = results;
 
@@ -92,8 +97,11 @@ function handleSearch(event) {
 
     const results = searchArtifacts(query);
     displayResults(results);
-    searchResults.style.display = 'block';
-    searchResults.scrollIntoView({ behavior: 'smooth' });
+    
+    if (searchResults) {
+        searchResults.style.display = 'block';
+        searchResults.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -103,9 +111,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchForm.addEventListener('submit', handleSearch);
     }
     
-    rotateGradient(document.getElementById('title'), 'var(--gold-light)', '#ba6028ff', 1.5);
-    rotateGradient(document.getElementById('subtitle'), '#ffffff', '#feb47b', 0.8);
-    rotateGradient(document.getElementById('btnSubmit'), 'var(--gold-dark)', '#ffe749ff', 2);
+    const titleElement = document.getElementById('title');
+    const subtitleElement = document.getElementById('subtitle');
+    const btnSubmitElement = document.getElementById('btnSubmit');
+    
+    if (titleElement) rotateGradient(titleElement, 'var(--gold-light)', '#ba6028ff', 1.5);
+    if (subtitleElement) rotateGradient(subtitleElement, '#ffffff', '#feb47b', 0.8);
+    if (btnSubmitElement) rotateGradient(btnSubmitElement, 'var(--gold-dark)', '#ffe749ff', 2);
+    
     updateNavbarBackground();
 });
 
