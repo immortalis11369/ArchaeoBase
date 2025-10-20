@@ -109,7 +109,15 @@
         const artifactId = urlParams.get('id');
 
         if (!artifactId) {
-            document.getElementById('artifactContent').innerHTML = '<p>ID do artefato não especificado na URL.</p>';
+            const content = document.getElementById('artifactContent')
+            if (!content) {
+                console.error('artifactContent not found! Current existing divs are:')
+                document.querySelectorAll('div').forEach(div => {
+                    console.warn(div.id)
+                });
+                return;
+            }
+            content.innerHTML = '<p>ID do artefato não especificado na URL.</p>';
             return;
         }
 
