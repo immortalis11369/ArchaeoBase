@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalhes da Peça LEGO - ArchaeoBase</title>
+  <link rel="stylesheet" href="home/style.css" />
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <style>
+    .artifact-detail {
+      max-width: 900px;
+      margin: 120px auto 50px;
+      padding: 2rem;
+    }
+
+    .artifact-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .artifact-image {
+      max-width: 300px;
+      height: auto;
+      border-radius: 12px;
+      margin: 1rem auto;
+      border: 3px solid var(--gold-light);
+      box-shadow: 0 8px 25px rgba(231, 192, 63, 0.2);
+      display: block;
+    }
+
+    .artifact-info {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .info-item {
+      background: rgba(231, 192, 63, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--gold-light);
+      margin-bottom: 1rem;
+    }
+
+    .info-item strong {
+      color: var(--gold-light);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .back-button {
+      display: inline-block;
+      background: var(--gold-dark);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: var(--gold-light);
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
+    <div class="nav-container">
+      <div class="nav-logo"><img id="logo" title="logo" src="assets/glogo.png"><h3 id="navtitle"> ArchaeoBase</h3></div>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Buscar</a></li>
+        <li><a href="abouts/about-project.html" class="nav-link">Sobre o Site</a></li>
+        <li><a href="abouts/about-project.html#about-team" class="nav-link">Sobre Nós</a></li>
+        <li><a href="season/project.html" class="nav-link" target="_blank" rel="noopener">Sobre o Projeto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="artifact-detail">
+    <div id="artifactContent">
+      <!-- Content will be loaded by JavaScript -->
+    </div>
+    <a href="index.html" class="back-button">← Voltar para Busca</a>
+  </main>
+
+  <footer id="footer" role="contentinfo" tabindex="-1" class="footer-section">
+    <div class="footer-container">
+      <h3><strong>IMMORTALIS!</strong></h3>
+      <p>FIRST Age</p>
+      <p>FIRST <i>LEGO</i> League <strong>Challenge</strong></p>
+      <p><em>UNEARTHED 25-26</em></p>
+      <p><a href="https://www.instagram.com/equipe_immortalis/">@equipe_immortalis</a></p>
+      <p><a href="mailto:equipeimmortalis5821@gmail.com">equipeimmortalis5821@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Load and display artifact details
+    async function loadArtifactDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const artifactId = urlParams.get('id');
+
+      if (!artifactId) {
+        document.getElementById('artifactContent').innerHTML = '<p>Peça LEGO não encontrada.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch('data/artifacts.json');
+        const data = await response.json();
+        const artifact = data.artifacts.find(a => a.id == artifactId);
+
+        if (!artifact) {
+          document.getElementById('artifactContent').innerHTML = '<p>Peça LEGO não encontrada.</p>';
+          return;
+        }
+
+        document.title = `${artifact.name} - ArchaeoBase LEGO`;
+        
+        const content = `
+          <div class="artifact-header">
+            <h1>${artifact.name}</h1>
+          </div>
+          
+          <div class="artifact-info">
+            <img src="${artifact.img}" alt="${artifact.name}" class="artifact-image" 
+                 onerror="this.src='assets/placeholder.jpg'">
+
+            <div class="info-item">
+              <strong>Descrição</strong>
+              <p>${artifact.description}</p>
+            </div>
+
+            ${artifact.alias.length > 0 ? `
+            <div class="info-item">
+              <strong>Também conhecida como</strong>
+              <div class="artifact-tags">
+                ${artifact.alias.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
+              </div>
+            </div>
+            ` : ''}
+
+            <div class="info-item">
+              <strong>Tags e Características</strong>
+              <div class="artifact-tags">
+                ${artifact.tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('artifactContent').innerHTML = content;
+      } catch (error) {
+        console.error('Error loading LEGO piece details:', error);
+        document.getElementById('artifactContent').innerHTML = '<p>Erro ao carregar detalhes da peça LEGO.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadArtifactDetails);
+  </script>
+</body>
+</html>
