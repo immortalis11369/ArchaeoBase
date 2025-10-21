@@ -29,7 +29,7 @@ function searchArtifacts(query) {
         if (artifact.name.toLowerCase().includes(searchTerm)) return true;
         if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
         if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
-        if (artifact.description.toLowerCase().includes(searchTerm)) return true;
+        // if (artifact.description.toLowerCase().includes(searchTerm)) return true;
         return false;
     });
 }
