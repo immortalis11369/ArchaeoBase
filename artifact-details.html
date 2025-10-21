@@ -29,8 +29,8 @@
 
     .artifact-image {
       width: 100%;
-      max-width: 200px;
-      height: 190px;
+      max-width: 250px;
+      height: 240px;
       border-radius: 12px;
       margin: 0 auto;
       display: block;
@@ -79,12 +79,53 @@
     }
 
     .artifact-tag {
-      background: var(--gold-light);
+      background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
       color: var(--black);
       padding: 0.4rem 1rem;
       border-radius: 20px;
       font-size: 0.9rem;
       font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .artifact-tag::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, var(--gold-dark), var(--gold-light), var(--gold-dark), var(--gold-light));
+      background-size: 400% 400%;
+      border-radius: 20px;
+      z-index: -1;
+      animation: gradientRotate 3s ease infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .artifact-tag:hover::before {
+      opacity: 1;
+      animation: gradientRotate 0.5s linear infinite;
+    }
+
+    .artifact-tag:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(231, 192, 63, 0.4);
+    }
+
+    @keyframes gradientRotate {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
 
     .related-section {
