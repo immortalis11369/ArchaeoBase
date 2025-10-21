@@ -183,10 +183,13 @@
   </footer>
 
   <script>
+    let currentSearchTerm = '';
+    let allArtifacts = [];
+
     async function loadArtifactDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const artifactIndex = urlParams.get('id');
-        const searchTerm = urlParams.get('searchterm')
+        currentSearchTerm = urlParams.get('searchterm') || '';
 
         const artifactContent = document.getElementById('artifactContent');
         
@@ -203,7 +206,8 @@
         try {
             const response = await fetch('../ArchaeoBase/data/artifacts.json');
             const data = await response.json();
-            const currentArtifact = data.artifacts[artifactIndex - 1];
+            allArtifacts = data.artifacts;
+            const currentArtifact = allArtifacts[artifactIndex - 1];
 
             if (!currentArtifact) {
                 artifactContent.innerHTML = '<p>Artefato não encontrado.</p>';
@@ -212,13 +216,22 @@
 
             document.title = `${currentArtifact.name} - ArchaeoBase by Immortalis`;
             
-            const relatedItems = data.artifacts.filter((artifact, index) => { 
-                if (index == (artifactIndex - 1)) return false;
-                if (artifact.name.toLowerCase().includes(searchTerm)) return true;
-                if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
-                if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
-                if (artifact.description.toLowerCase().includes(searchTerm)) return true;
-                return false;
+            // Find related items based on search term
+            const relatedItems = allArtifacts.filter((artifact, index) => { 
+                if (index == (artifactIndex - 1)) return false; // Exclude current artifact
+                
+                // If there's a search term, filter by it
+                if (currentSearchTerm) {
+                    const searchTermLower = currentSearchTerm.toLowerCase();
+                    if (artifact.name.toLowerCase().includes(searchTermLower)) return true;
+                    if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTermLower))) return true;
+                    if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTermLower))) return true;
+                    if (artifact.description.toLowerCase().includes(searchTermLower)) return true;
+                    return false;
+                }
+                
+                // If no search term, show all other artifacts
+                return true;
             });
 
             const content = `
@@ -255,12 +268,20 @@
             <div class="related-section">
                 <h3>Outras Peças Relacionadas</h3>
                 <div class="related-grid">
-                ${relatedItems.map((artifact, index) => `
-                    <div class="related-item" onclick="viewRelatedItem(${index + 1})">
+                ${relatedItems.map((artifact) => {
+                    // Find the original index of this artifact
+                    const originalIndex = allArtifacts.findIndex(a => 
+                        a.name === artifact.name && 
+                        a.description === artifact.description
+                    ) + 1;
+                    
+                    return `
+                    <div class="related-item" onclick="viewRelatedItem(${originalIndex})">
                         <img src="${artifact.img}" alt="${artifact.name}" class="related-image">
                         <div class="related-name">${artifact.name}</div>
                     </div>
-                `).join('')}
+                    `;
+                }).join('')}
                 </div>
             </div>
             ` : ''}
@@ -274,10 +295,17 @@
     }
 
     function viewRelatedItem(relatedIndex) {
-        window.location.href = `artifact-details.html?id=${relatedIndex}&searchterm=${searchTerm}`;
+        let url = `artifact-details.html?id=${relatedIndex}`;
+        if (currentSearchTerm) {
+            url += `&searchterm=${encodeURIComponent(currentSearchTerm)}`;
+        }
+        window.location.href = url;
     }
 
     document.addEventListener('DOMContentLoaded', loadArtifactDetails);
+    document.getElementById('navtitle').addEventListener('click', () => {
+      window.location.href = `index.html`
+    })
   </script>
 </body>
 </html>
