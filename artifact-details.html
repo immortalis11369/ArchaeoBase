@@ -44,7 +44,12 @@
   </footer>
 
   <script type="module">
-    const supabase = window.supabase
+    const URL = 'https://kaefhycyvuwoozlwakfo.supabase.co';
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY';
+    
+    const supabase = window.supabase.createClient(URL, KEY, {
+      auth: { persistSession: false }
+    });
 
     async function loadArtifactDetails() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -76,7 +81,6 @@
 
         document.title = `${currentArtifact.name} - ArchaeoBase`;
 
-        // Load related artifacts based on search term
         let relatedItems = [];
         if (searchTerm) {
           const { data: allArtifacts } = await supabase
@@ -87,13 +91,16 @@
           if (allArtifacts) {
             const searchTermLower = searchTerm.toLowerCase();
             relatedItems = allArtifacts.filter(artifact => {
-              if (artifact.name.toLowerCase().includes(searchTermLower)) return true;
-              if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTermLower))) return true;
-              if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTermLower))) return true;
+              if (artifact.name && artifact.name.toLowerCase().includes(searchTermLower)) return true;
+              if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTermLower))) return true;
+              if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTermLower))) return true;
               return false;
             });
           }
         }
+
+        const aliases = currentArtifact.alias || [];
+        const tags = currentArtifact.tags || [];
 
         const content = `
           <div class="artifact-header">
@@ -108,21 +115,37 @@
               <p>${currentArtifact.description}</p>
             </div>
 
-            ${currentArtifact.alias.length > 0 ? `
+            ${aliases.length > 0 ? `
             <div class="info-item">
               <strong>Também Conhecido Como</strong>
               <div class="artifact-tags">
-                ${currentArtifact.alias.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
+                ${aliases.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
               </div>
             </div>
             ` : ''}
 
+            ${tags.length > 0 ? `
             <div class="info-item">
               <strong>Tags</strong>
               <div class="artifact-tags">
-                ${currentArtifact.tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
+                ${tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
               </div>
             </div>
+            ` : ''}
+
+            ${currentArtifact.location ? `
+            <div class="info-item">
+              <strong>Localização</strong>
+              <p>${currentArtifact.location}</p>
+            </div>
+            ` : ''}
+
+            ${currentArtifact.period ? `
+            <div class="info-item">
+              <strong>Período</strong>
+              <p>${currentArtifact.period}</p>
+            </div>
+            ` : ''}
           </div>
 
           ${relatedItems.length > 0 ? `
@@ -130,7 +153,7 @@
             <h3>Artefatos Relacionados</h3>
             <div class="related-grid">
               ${relatedItems.map(artifact => `
-                <div class="related-item" onclick="location.href='artifact-details.html?id=${artifact.id}&searchterm=${searchTerm}'">
+                <div class="related-item" onclick="location.href='artifact-details.html?id=${artifact.id}&searchterm=${encodeURIComponent(searchTerm)}'">
                   <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}" class="related-image">
                   <div class="related-name">${artifact.name}</div>
                 </div>
@@ -147,7 +170,11 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadArtifactDetails);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadArtifactDetails);
+    } else {
+      loadArtifactDetails();
+    }
   </script>
 </body>
 </html>
