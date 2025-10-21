@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const navbar = document.getElementById('navbar');
 
+		const urlparams = new URLSearchParams(window.location.search);
+		const searchParam = urlparams.get('search');
+
+		if (searchParam && searchInput) {
+			searchInput.value = searchParam;	
+			const searchEvent = new Event('submit', { bubbles: true });
+			searchForm.dispatchEvent(searchEvent);
+		}
+
     let artifactsData = [];
     let currentResults = [];
 

@@ -88,6 +88,7 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .artifact-tag::before {
@@ -328,7 +329,7 @@
             <div class="info-item">
               <strong>Também Conhecido Como</strong>
               <div class="artifact-tags">
-                ${aliases.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
+                ${aliases.map(alias => `<span class="artifact-tag" data-search="${alias}">${alias}</span>`).join('')}
               </div>
             </div>
             ` : ''}
@@ -337,7 +338,7 @@
             <div class="info-item">
               <strong>Tags</strong>
               <div class="artifact-tags">
-                ${tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
+                ${tags.map(tag => `<span class="artifact-tag" data-search="${tag}">${tag}</span>`).join('')}
               </div>
             </div>
             ` : ''}
@@ -373,6 +374,18 @@
         `;
 
         artifactContent.innerHTML = content;
+
+        // Add click event listeners to all artifact tags
+        document.querySelectorAll('.artifact-tag').forEach(tag => {
+          tag.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const searchTerm = tag.getAttribute('data-search');
+            if (searchTerm) {
+              window.location.href = `index.html?search=${encodeURIComponent(searchTerm)}`;
+            }
+          });
+        });
+
       } catch (error) {
         console.error('Error loading artifact details:', error);
         artifactContent.innerHTML = '<p>Erro ao carregar detalhes do artefato.</p>';
