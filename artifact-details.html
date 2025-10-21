@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Detalhes da Peça LEGO - ArchaeoBase</title>
+  <title>Detalhes do Artefato - ArchaeoBase by Immortalis</title>
   <link rel="stylesheet" href="home/style.css" />
   <link rel="icon" href="assets/logo.png" type="image/png">
   <style>
@@ -65,6 +65,79 @@
       color: var(--black);
       transform: translateY(-2px);
     }
+
+    /* Related Items Section */
+    .related-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(231, 192, 63, 0.3);
+    }
+
+    .related-section h3 {
+      color: var(--gold-light);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .related-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(231, 192, 63, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .related-item:hover {
+      background: rgba(231, 192, 63, 0.1);
+      border-color: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(231, 192, 63, 0.15);
+    }
+
+    .related-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--gold-light);
+    }
+
+    .related-name {
+      font-size: 0.9rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 768px) {
+      .related-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.8rem;
+      }
+      
+      .related-image {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .related-name {
+        font-size: 0.8rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -123,33 +196,37 @@
         try {
             const response = await fetch('../ArchaeoBase/data/artifacts.json');
             const data = await response.json();
-            const artifact = data.artifacts[artifactIndex - 1];
+            const currentArtifact = data.artifacts[artifactIndex - 1];
 
-            if (!artifact) {
-                artifactContent.innerHTML = '<p>Peça LEGO não encontrada.</p>';
+            if (!currentArtifact) {
+                artifactContent.innerHTML = '<p>Artefato não encontrado.</p>';
                 return;
             }
 
-            document.title = `${artifact.name} - ArchaeoBase LEGO`;
+            document.title = `${currentArtifact.name} - ArchaeoBase by Immortalis`;
             
+            const relatedItems = data.artifacts.filter((artifact, index) => {
+                return index !== (artifactIndex - 1);
+            });
+
             const content = `
             <div class="artifact-header">
-                <h1>${artifact.name}</h1>
+                <h1>${currentArtifact.name}</h1>
             </div>
             
             <div class="artifact-info">
-                <img src="${artifact.img}" alt="${artifact.name}" class="artifact-image">
+                <img src="${currentArtifact.img}" alt="${currentArtifact.name}" class="artifact-image">
 
                 <div class="info-item">
                 <strong>Descrição</strong>
-                <p>${artifact.description}</p>
+                <p>${currentArtifact.description}</p>
                 </div>
 
-                ${artifact.alias.length > 0 ? `
+                ${currentArtifact.alias.length > 0 ? `
                 <div class="info-item">
-                <strong>Também conhecida como</strong>
+                <strong>Também Conhecida Como...</strong>
                 <div class="artifact-tags">
-                    ${artifact.alias.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
+                    ${currentArtifact.alias.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
                 </div>
                 </div>
                 ` : ''}
@@ -157,17 +234,36 @@
                 <div class="info-item">
                 <strong>Tags e Características</strong>
                 <div class="artifact-tags">
-                    ${artifact.tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
+                    ${currentArtifact.tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
                 </div>
                 </div>
             </div>
+
+            ${relatedItems.length > 0 ? `
+            <div class="related-section">
+                <h3>Outras Peças Relacionadas</h3>
+                <div class="related-grid">
+                ${relatedItems.map((artifact, index) => `
+                    <div class="related-item" onclick="viewRelatedItem(${index + 1})">
+                        <img src="${artifact.img}" alt="${artifact.name}" class="related-image">
+                        <div class="related-name">${artifact.name}</div>
+                    </div>
+                `).join('')}
+                </div>
+            </div>
+            ` : ''}
             `;
 
             artifactContent.innerHTML = content;
         } catch (error) {
-            console.error('Error loading LEGO piece details:', error);
-            artifactContent.innerHTML = '<p>Erro ao carregar detalhes da peça LEGO.</p>';
+            console.error('Error loading artifact piece details:', error);
+            artifactContent.innerHTML = '<p>Erro ao carregar detalhes do Artefato.</p>';
         }
+    }
+
+    function viewRelatedItem(relatedIndex) {
+      // atualiza o site pro item relacionado yay yay
+        window.location.href = `artifact-details.html?id=${relatedIndex}`;
     }
 
     document.addEventListener('DOMContentLoaded', loadArtifactDetails);
