@@ -68,7 +68,7 @@
             "id": 9,
             "alias": ["L", "L 3x5", "L médio"],
             "name": "LEGO 32526 - Technic, Liftarm, Modified Bent Thick L-Shape 3 x 5",
-            "description": "",
+            "description": "Uma viga estrutural angular em formato de L, com medidas de 3x5 unidades. Esta peça robusta é essencial para criar estruturas com ângulos retos, proporcionando rigidez e versatilidade às construções Technic. Sua espessura garante durabilidade em mecanismos complexos.",
             "img": "../ArchaeoBase/assets/imgs/9.png",
             "tags": ["L azul", "azul", "3x5", "1,77g"]
         },
@@ -76,7 +76,7 @@
             "id": 10,
             "alias": ["V", "Viga Torta"],
             "name": "LEGO 61184 - Technic, Pin 1/2 with 2L Bar Extension (Flick Missile)",
-            "description": "",
+            "description": "Este conector especializado combina um pino com ranhuras de atrito com uma extensão de barra de 2 unidades. É comumente utilizado como alavanca de lançamento para mísseis de acionamento rápido ou como uma pequena alavanca de controle em modelos Technic, permitindo acionamento rápido de mecanismos.",
             "img": "../ArchaeoBase/assets/imgs/10.png",
             "tags": ["preto", "viga", "2g", "Vzinho", "viga com +"]
         },
@@ -84,7 +84,7 @@
             "id": 11,
             "alias": ["viga torta"],
             "name": "LEGO 61184 - Technic, Pin 1/2 with 2L Bar Extension (Flick Missile)",
-            "description": "",
+            "description": "Versão em amarelo deste conector que integra um pino com ranhuras de atrito a uma extensão de barra de 2 unidades. Funciona perfeitamente como mecanismo de lançamento para mísseis de acionamento rápido ou como alavanca de controle em construções Technic, proporcionando acionamento preciso de funções.",
             "img": "../ArchaeoBase/assets/imgs/11.png",
             "tags": ["Amarelo", "2,63g", "viga"]
         },
@@ -92,7 +92,7 @@
             "id": 12,
             "alias": ["J", "viga torta com extensão"],
             "name": "LEGO 32009 - Technic, Liftarm, Modified Bent Thick 1 x 11.5 Double",
-            "description": "",
+            "description": "Uma longa viga estrutural com dupla curvatura que lembra um 'S' ou 'J' esticado. Sua forma única permite criar silhuetas complexas e estruturas curvadas robustas em modelos Technic de grande porte, oferecendo múltiplos pontos de conexão ao longo de seu comprimento de 11,5 unidades.",
             "img": "../ArchaeoBase/assets/imgs/12.png",
             "tags": ["preto", "viga", "3,46g"]
         },
@@ -100,7 +100,7 @@
             "id": 13,
             "alias": ["Quadro pequeno", "quadro normal"],
             "name": "LEGO 64179 - Technic, Liftarm, Modified Frame Thick 5 x 7 Open Center",
-            "description": "",
+            "description": "Uma estrutura de quadro retangular com centro vazado, medindo 5x7 unidades. Este quadro é fundamental para construir chassis e estruturas principais de veículos e máquinas, proporcionando rigidez estrutural com múltiplos pontos de conexão em todas as direções.",
             "img": "../ArchaeoBase/assets/imgs/13.png",
             "tags": ["quadro", "preto", "viga"]
         },
@@ -108,7 +108,7 @@
             "id": 14,
             "alias": ["Quadro médio"],
             "name": "LEGO 39794 - Technic, Liftarm, Modified Frame Thick 7 x 11 Open Center",
-            "description": "",
+            "description": "Quadro estrutural de tamanho médio com centro vazado, proporcionando uma estrutura leve porém resistente para construir chassis de veículos, suportes e plataformas em sets Technic. Suas dimensões generosas permitem construções estáveis com amplo espaço interno para mecanismos.",
             "img": "../ArchaeoBase/assets/imgs/14.png",
             "tags": ["quadro", "rosa"]
         },
@@ -116,7 +116,7 @@
             "id": 15,
             "alias": ["Quadro grande"],
             "name": "LEGO 39790 - Technic, Liftarm, Modified Frame Thick 11 x 15 Open Center",
-            "description": "",
+            "description": "Um quadro estrutural de grandes dimensões com centro vazado, servindo como elemento fundamental para construir modelos em grande escala como carros e guindastes. Oferece integridade estrutural excepcional e numerosos pontos de fixação para mecanismos complexos.",
             "img": "../ArchaeoBase/assets/imgs/15.png",
             "tags": ["quadro", "azul"]
         },
@@ -124,7 +124,7 @@
             "id": 16,
             "alias": ["cavalo", "lhama", "cachorro"],
             "name": "LEGO 55615 - Technic, Pin Connector Perpendicular 3 x 3 Bent with 4 Pins",
-            "description": "",
+            "description": "Conector angular em formato de cruz com quatro pinos, projetado para conectar múltiplas vigas simultaneamente em ângulos retos. Sua forma compacta e versátil permite criar junções fortes e complexas, sendo essencial para estruturas tridimensionais em construções Technic avançadas.",
             "img": "../ArchaeoBase/assets/imgs/16.png",
             "tags": ["conector", "conector com pino", "L conector"]
         },
@@ -132,7 +132,7 @@
             "id": 17,
             "alias": ["H", "Hzinho"],
             "name": "LEGO 48989 - Technic, Pin Connector Perpendicular 3L with 4 Pins",
-            "description": "",
+            "description": "Conector perpendicular em formato de 'H' que utiliza seus quatro pinos para conectar duas ou mais vigas em ângulo de 90 graus. Ideal para criar junções estáveis e reforçadas em montagens Technic, proporcionando excelente rigidez às estruturas.",
             "img": "../ArchaeoBase/assets/imgs/17.png",
             "tags": ["cinza", "conector", "conector com pino"]
         },
@@ -140,7 +140,7 @@
             "id": 18,
             "alias": ["quadradinho", "bloco", "bloco conector"],
             "name": "LEGO 39793 - Technic, Pin Connector Block, Liftarm 1 x 3 x 3",
-            "description": "",
+            "description": "Pequeno bloco conector compacto que funciona como uma viga estrutural multidimensional. Com múltiplos pontos de conexão para pinos e eixos, permite criar geometrias Technic densas e complexas em um espaço reduzido, ideal para mecanismos intrincados.",
             "img": "../ArchaeoBase/assets/imgs/18.png",
             "tags": ["rosa", "2g", "+", "viga"]
         }
