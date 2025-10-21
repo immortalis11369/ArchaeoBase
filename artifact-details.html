@@ -211,8 +211,13 @@
 
             document.title = `${currentArtifact.name} - ArchaeoBase by Immortalis`;
             
-            const relatedItems = data.artifacts.filter((artifact, index) => {
-                return index !== (artifactIndex - 1);
+            const relatedItems = data.artifacts.filter((artifact, index) => { 
+                if (index == (artifactIndex - 1)) return false;
+                if (artifact.name.toLowerCase().includes(searchTerm)) return true;
+                if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
+                if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
+                if (artifact.description.toLowerCase().includes(searchTerm)) return true;
+                return false;
             });
 
             const content = `
@@ -268,7 +273,6 @@
     }
 
     function viewRelatedItem(relatedIndex) {
-      // atualiza o site pro item relacionado yay yay
         window.location.href = `artifact-details.html?id=${relatedIndex}`;
     }
 
