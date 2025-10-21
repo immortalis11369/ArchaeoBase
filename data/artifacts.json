@@ -1,45 +1,148 @@
 {
     "artifacts": [
-    {
-        "id": 1,
-        "alias": [],
-        "name": "...",
-        "description": "...",
-        "img": "../ArchaeoBase/assets/imgs",
-        "tags": []
-    },
-    {
-        "id": 2,
-        "alias": [
-            "L 2x4",
-            "L Pequeno"
-        ],
-        "name": "Lego 32140 Black",
-        "description": "Uma peça preta que tem um formato semelhante a um L, também possui uma entrada em formato de + para eixos. Muito usada. A peça foi criada em 1999. Existiu em 1111 sets de lego nesses 26 anos.",
-        "img": "../ArchaeoBase/assets/imgs/2.jpg",
-        "tags": [
-            "preto", "L", "L pequeno", "L 2x4", "1199", "1111 sets", "pequeno"
-        ]
-    },
-    {
-        "id": 3,
-        "alias": [
-            "borracinha dupla",
-            "borrachina",
-            "preto"
-        ],
-        "name": "LEGO 45590 Technic Axle Connector Double Flexible",
-        "description": "A peça LEGO com o número de design 45590 é um Conector de Eixo Duplo Flexível na cor preta, parte da linha LEGO Technic. Trata-se de uma peça de borracha que permite conectar eixos, adicionando flexibilidade às construções. Presente em mais de 200 kits de lego. Criada em 2003.",
-        "img": "../ArchaeoBase/assets/imgs/3.jpg",
-        "tags": [
-            "pequeno",
-            "duplo",
-            "eixo",
-            "borracha",
-            "technic",
-            "conector",
-            "flexível"
-        ]
-    }
-]
+        {
+            "id": 1,
+            "alias": ["Conector de eixo e pino", "micro L"],
+            "name": "LEGO 32014 black",
+            "description": "Uma peça com um formato de duas retas à 90 graus com um uma abertura em formato redondo em cima, para encaixar pinos e conectores, e duas aberturas em formato de + para encaixar eixos. Ela é muito utilizada para construções que necessitam do encaixe de dois eixos e um pino, permitindo a criação de construções rígidas. A peça foi introduzida em 1997 e participou de 442 conjuntos de 1997 até 2025.",
+            "img": "../ArchaeoBase/assets/imgs/1.png",
+            "tags": ["micro L", "preto", "L", "conector", "90 graus", "0,66g"]
+        },
+        {
+            "id": 2,
+            "alias": ["Tocha", "conector duplo com encaixe para o eixo"],
+            "name": "LEGO 32054 red",
+            "description": "Uma peça com formato reto, de 3 unidades de LEGO com conector para 2 peças LEGO e um orifício em formato de + para encaixar eixos. Pode ser utilizado para criar estruturas rígidas e para conectar peças com eixos. Foi criada em 1997, e apareceu em mais de 1000 sets desde seu lançamento.",
+            "img": "../ArchaeoBase/assets/imgs/2.png",
+            "tags": ["vermelho", "conector", "eixo", "0,33g"]
+        },
+        {
+            "id": 3,
+            "alias": ["Conector duplo", "conector grande"],
+            "name": "LEGO 6558-technic pin 3L with friction ridges",
+            "description": "Uma peça de 3 unidades usada para unir peças sem que elas girem entre elas. Pode ser utilizada para criar estruturas rígidas que necessitem de encaixe entre 3 peças. Ela aparece em 1739 sets.",
+            "img": "../ArchaeoBase/assets/imgs/3.png",
+            "tags": ["conector", "azul", "3 unidades", "0,37g"]
+        },
+        {
+            "id": 4,
+            "alias": ["conector grande", "conector duplo"],
+            "name": "LEGO 32556 - Technic, Pin 3L without Friction Ridges",
+            "description": "Uma peça de 3 unidades usada para unir peças. Pode ser utilizada para criar estruturas rígidas que necessitem de encaixe entre 3 peças. Existe desde 2001.",
+            "img": "../ArchaeoBase/assets/imgs/4.png",
+            "tags": ["conector", "bege", "liso", "3 unidades", "0,25g"]
+        },
+        {
+            "id": 5,
+            "alias": ["conector com buraco no meio", "conector duplo"],
+            "name": "LEGO 87082 - Technic, Pin 3L with Friction Ridges and Center Pin Hole",
+            "description": "Peça de 3 unidades lego, usada para unir peças distintas dificultando a movimentação entre elas. Possui a capacidade de conectar peças em duas direções diferentes. Foi criada em 2010 e desde então apareceu em 310 sets",
+            "img": "../ArchaeoBase/assets/imgs/5.png",
+            "tags": ["conector", "conector com 1 unidade", "3 unidades", "pino central", "cinza", "0,5g"]
+        },
+        {
+            "id": 6,
+            "alias": ["conectorzinho", "conector pequeno"],
+            "name": "LEGO 2780 - Technic, Pin with Short Friction Ridges",
+            "description": "Peça de 3 unidades lego, usada para unir peças distintas com conexões diferentes. Foi criada em 2008 e desde então apareceu em 560 sets",
+            "img": "../ArchaeoBase/assets/imgs/6.png",
+            "tags": ["preto", "conector", "3 unidades", "0,2g"]
+        },
+        {
+            "id": 7,
+            "alias": ["conectorzinho bege", "conector pequeno", "conector pequeno liso"],
+            "name": "LEGO 3749 - Technic, Axle 1L with Pin without Friction Ridges",
+            "description": "Peça de 2 unidades lego, usada para unir peças distintas com conexões diferentes. Foi criada em 2008 e desde então apareceu em 560 sets",
+            "img": "../ArchaeoBase/assets/imgs/7.png",
+            "tags": ["bege", "conector", "2 unidades", "conectorzinho", "liso", "eixo", "conector com pino", "0,22g"]
+        },
+        {
+            "id": 8,
+            "alias": ["conectorzinho", "eixinho", "conector pequeno"],
+            "name": "LEGO 32062 - Technic, Axle 2L Notched",
+            "description": "Peça de 2 unidades lego, usada para unir peças distintas. Foi criada em 1996 e desde então apareceu em 2753 sets",
+            "img": "../ArchaeoBase/assets/imgs/8.png",
+            "tags": ["vermelho", "conector", "pequeno", "2 unidades", "eixo", "0,26g"]
+        },
+        {
+            "id": 9,
+            "alias": ["L", "L 3x5", "L médio"],
+            "name": "LEGO 32526 - Technic, Liftarm, Modified Bent Thick L-Shape 3 x 5",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/9.png",
+            "tags": ["L azul", "azul", "3x5", "1,77g"]
+        },
+        {
+            "id": 10,
+            "alias": ["V", "Viga Torta"],
+            "name": "LEGO 61184 - Technic, Pin 1/2 with 2L Bar Extension (Flick Missile)",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/10.png",
+            "tags": ["preto", "viga", "2g", "Vzinho", "viga com +"]
+        },
+        {
+            "id": 11,
+            "alias": ["viga torta"],
+            "name": "LEGO 61184 - Technic, Pin 1/2 with 2L Bar Extension (Flick Missile)",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/11.png",
+            "tags": ["Amarelo", "2,63g", "viga"]
+        },
+        {
+            "id": 12,
+            "alias": ["J", "viga torta com extensão"],
+            "name": "LEGO 32009 - Technic, Liftarm, Modified Bent Thick 1 x 11.5 Double",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/12.png",
+            "tags": ["preto", "viga", "3,46g"]
+        },
+        {
+            "id": 13,
+            "alias": ["Quadro pequeno", "quadro normal"],
+            "name": "LEGO 64179 - Technic, Liftarm, Modified Frame Thick 5 x 7 Open Center",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/13.png",
+            "tags": ["quadro", "preto", "viga"]
+        },
+        {
+            "id": 14,
+            "alias": ["Quadro médio"],
+            "name": "LEGO 39794 - Technic, Liftarm, Modified Frame Thick 7 x 11 Open Center",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/14.png",
+            "tags": ["quadro", "rosa"]
+        },
+        {
+            "id": 15,
+            "alias": ["Quadro grande"],
+            "name": "LEGO 39790 - Technic, Liftarm, Modified Frame Thick 11 x 15 Open Center",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/15.png",
+            "tags": ["quadro", "azul"]
+        },
+        {
+            "id": 16,
+            "alias": ["cavalo", "lhama", "cachorro"],
+            "name": "LEGO 55615 - Technic, Pin Connector Perpendicular 3 x 3 Bent with 4 Pins",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/16.png",
+            "tags": ["conector", "conector com pino", "L conector"]
+        },
+        {
+            "id": 17,
+            "alias": ["H", "Hzinho"],
+            "name": "LEGO 48989 - Technic, Pin Connector Perpendicular 3L with 4 Pins",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/17.png",
+            "tags": ["cinza", "conector", "conector com pino"]
+        },
+        {
+            "id": 18,
+            "alias": ["quadradinho", "bloco", "bloco conector"],
+            "name": "LEGO 39793 - Technic, Pin Connector Block, Liftarm 1 x 3 x 3",
+            "description": "",
+            "img": "../ArchaeoBase/assets/imgs/18.png",
+            "tags": ["rosa", "2g", "+", "viga"]
+        }
+    ]
 }
