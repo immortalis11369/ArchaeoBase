@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				searchResults.style.display = 'block';
 
 				const { data: artefacts, error } = await window.supabase
-					.from('artefatos')
+					.from('artifacts')
 					.select('*')
 					.or(`nome.ilike.%${searchTerm}%,tags.cs.{${searchTerm}},descricao.ilike.%${searchTerm}%`)
 					.order('nome');

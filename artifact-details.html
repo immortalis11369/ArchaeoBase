@@ -61,7 +61,6 @@
       }
 
       try {
-        // Load current artifact
         const { data: currentArtifact, error } = await supabase
           .from('artifacts')
           .select('*')
