@@ -274,7 +274,7 @@
     }
 
     function viewRelatedItem(relatedIndex) {
-        window.location.href = `artifact-details.html?id=${relatedIndex}`;
+        window.location.href = `artifact-details.html?id=${relatedIndex}&searchterm=${searchTerm}`;
     }
 
     document.addEventListener('DOMContentLoaded', loadArtifactDetails);
