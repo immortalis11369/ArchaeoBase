@@ -197,13 +197,27 @@
     </div>
   </footer>
 
-  <script>
+  <script type="module">
+    const URL = 'https://kaefhycyvuwoozlwakfo.supabase.co';
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY';
+    
+    const supabase = window.supabase.createClient(URL, KEY, {
+      auth: { persistSession: false }
+    });
+
     const imageInput = document.getElementById('image');
     const imagePreview = document.getElementById('imagePreview');
 
     imageInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert('A imagem deve ter no máximo 5MB');
+          imageInput.value = '';
+          imagePreview.innerHTML = '';
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = function(e) {
           imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
@@ -227,30 +241,30 @@
       submitBtn.textContent = 'Registrando...';
 
       const formData = new FormData(form);
-      const imageFile = formData.get('image');
+      const imageFile = imageInput.files[0];
       
       let imageUrl = null;
 
       try {
-        // If an image was uploaded, upload it to Supabase Storage first
         if (imageFile && imageFile.size > 0) {
           uploadProgress.style.display = 'block';
+          progressText.textContent = '0%';
           
-          // Generate unique filename
           const fileExt = imageFile.name.split('.').pop();
           const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
           
-          const { data: uploadData, error: uploadError } = await window.supabase.storage
+          const { data: uploadData, error: uploadError } = await supabase.storage
             .from('artifact-images')
             .upload(fileName, imageFile, {
               cacheControl: '3600',
               upsert: false
             });
 
-          if (uploadError) throw uploadError;
+          if (uploadError) {
+            throw new Error(`Erro no upload da imagem: ${uploadError.message}`);
+          }
 
-          // Get public URL
-          const { data: urlData } = window.supabase.storage
+          const { data: urlData } = supabase.storage
             .from('artifact-images')
             .getPublicUrl(fileName);
 
@@ -258,22 +272,26 @@
           uploadProgress.style.display = 'none';
         }
 
-        // Prepare artifact data
         const artifactData = {
           name: formData.get('name'),
-          alias: formData.get('alias').split(',').map(a => a.trim()).filter(a => a),
           description: formData.get('description'),
-          img: imageUrl, // Use the uploaded image URL or null
-          tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t)
+          tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t),
+          img: imageUrl
         };
 
-        // Insert into database
-        const { data, error } = await window.supabase
+        const aliasInput = formData.get('alias');
+        if (aliasInput && aliasInput.trim()) {
+          artifactData.alias = aliasInput.split(',').map(a => a.trim()).filter(a => a);
+        }
+
+        const { data, error } = await supabase
           .from('artifacts')
           .insert([artifactData])
           .select();
 
-        if (error) throw error;
+        if (error) {
+          throw new Error(`Erro no banco de dados: ${error.message}`);
+        }
 
         successMessage.style.display = 'block';
         form.reset();
@@ -281,6 +299,8 @@
         
         submitBtn.disabled = false;
         submitBtn.textContent = 'Registrar Artefato';
+        
+        successMessage.scrollIntoView({ behavior: 'smooth' });
         
         setTimeout(() => {
           successMessage.style.display = 'none';
@@ -295,6 +315,19 @@
         uploadProgress.style.display = 'none';
       }
     });
+
+    async function checkStorageBucket() {
+      try {
+        const { data, error } = await supabase.storage.getBucket('artifact-images');
+        if (error && error.message.includes('not found')) {
+          console.warn('Storage bucket "artifact-images" não existe. Crie no dashboard do Supabase.');
+        }
+      } catch (error) {
+        console.warn('Erro ao verificar storage bucket:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', checkStorageBucket);
   </script>
 </body>
 </html>
