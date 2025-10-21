@@ -34,7 +34,7 @@ function searchArtifacts(query) {
     });
 }
 
-function displayResults(results) {
+function displayResults(results, searchTerm) {
     if (!resultsContainer) {
         console.error('resultsContainer element not found');
         return;
@@ -71,19 +71,19 @@ function displayResults(results) {
         `;
         
         card.addEventListener('click', () => {
-            viewArtifactDetails(artifact.id);
+            viewArtifactDetails(artifact.id, searchTerm);
         });
         
         resultsContainer.appendChild(card);
     });
 }
 
-function viewArtifactDetails(artifactId) {
+function viewArtifactDetails(artifactId, searchTerm) {
     if (!artifactId) {
         alert('Erro: ID do artefato não encontrado');
         return;
     }
-    window.location.href = `artifact-details.html?id=${artifactId}`;
+    window.location.href = `artifact-details.html?id=${artifactId}&searchterm=${searchTerm}`;
 }
 
 function handleSearch(event) {
@@ -96,7 +96,7 @@ function handleSearch(event) {
     }
 
     const results = searchArtifacts(query);
-    displayResults(results);
+    displayResults(results, query);
     
     if (searchResults) {
         searchResults.style.display = 'block';

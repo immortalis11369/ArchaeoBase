@@ -186,6 +186,7 @@
     async function loadArtifactDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const artifactIndex = urlParams.get('id');
+        const searchTerm = urlParams.get('searchterm')
 
         const artifactContent = document.getElementById('artifactContent');
         
