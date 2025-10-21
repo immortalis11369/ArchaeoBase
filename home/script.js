@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				const { data: artefacts, error } = await window.supabase
 					.from('artifacts')
 					.select('*')
-					.or(`nome.ilike.%${searchTerm}%,tags.cs.{${searchTerm}},descricao.ilike.%${searchTerm}%`)
-					.order('nome');
+					.or(`name.ilike.%${searchTerm}%,tags.cs.{${searchTerm}},description.ilike.%${searchTerm}%`)
+					.order('name');
 
 				if (error) throw error;
 
