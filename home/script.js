@@ -1,3 +1,4 @@
+const supabase = window.supabase
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -12,12 +13,19 @@ let currentResults = [];
 
 async function loadArtifacts() {
     try {
-        const response = await fetch('../ArchaeoBase/data/artifacts.json');
-        const data = await response.json();
-        artifactsData = data.artifacts;
+        const { data, error } = await supabase
+            .from('artifacts')
+            .select('*')
+
+        if (error) throw error;
+        
+        artifactsData = data;
+        console.log('Loaded artifacts:', artifactsData.length);
     } catch (error) {
         console.error('Error loading artifacts:', error);
-    }
+        alert('Erro ao carregar artefatos: ' + error.message);
+        console.warn('Close page');
+      }
 }
 
 function searchArtifacts(query) {
@@ -29,9 +37,6 @@ function searchArtifacts(query) {
         if (artifact.name.toLowerCase().includes(searchTerm)) return true;
         if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
         if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
-        // if (artifact.description.toLowerCase().includes(searchTerm)) return true;
-        // tirei essa parte por que algumas pesquisas entregavam itens indesejados, como "conector" entregava
-        // o V, pois ele tem a palavra conector na descrição.
         return false;
     });
 }
@@ -49,19 +54,18 @@ function displayResults(results, searchTerm) {
         resultsContainer.innerHTML = `
             <div class="no-results">
                 <p>Nenhum artefato encontrado para sua busca.</p>
-                <p>Tente usar termos como: "lego", "L", "preto", etc.</p>
+                <p>Tente usar termos diferentes ou <a href="register.html">registre um novo artefato</a>.</p>
             </div>
         `;
         return;
     }
 
-    results.forEach((artifact, index) => {
+    results.forEach((artifact) => {
         const card = document.createElement('div');
         card.className = 'artifact-card';
-        card.dataset.artifactIndex = index;
         
         card.innerHTML = `
-            <img src="${artifact.img}" alt="${artifact.name}" class="artifact-image-small">
+            <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}" class="artifact-image-small">
             <div class="artifact-content">
                 <h4>${artifact.name}</h4>
                 <p>${artifact.description}</p>
@@ -80,14 +84,20 @@ function displayResults(results, searchTerm) {
     });
 }
 
+// View artifact details
 function viewArtifactDetails(artifactId, searchTerm) {
     if (!artifactId) {
         alert('Erro: ID do artefato não encontrado');
         return;
     }
-    window.location.href = `artifact-details.html?id=${artifactId}&searchterm=${searchTerm}`;
+    let url = `artifact-details.html?id=${artifactId}`;
+    if (searchTerm) {
+        url += `&searchterm=${encodeURIComponent(searchTerm)}`;
+    }
+    window.location.href = url;
 }
 
+// Handle search form submission
 function handleSearch(event) {
     event.preventDefault();
     
@@ -106,6 +116,7 @@ function handleSearch(event) {
     }
 }
 
+// Initialize
 document.addEventListener('DOMContentLoaded', async () => {
     await loadArtifacts();
     

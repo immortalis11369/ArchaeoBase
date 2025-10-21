@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrar Artefato - ArchaeoBase</title>
+  <link rel="stylesheet" href="home/style.css" />
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .registration-form {
+      max-width: 800px;
+      margin: 120px auto 50px;
+      padding: 2rem;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid rgba(231, 192, 63, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      font-size: 1rem;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold-light);
+      box-shadow: 0 0 10px rgba(231, 192, 63, 0.3);
+    }
+
+    .file-preview {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .file-preview img {
+      max-width: 200px;
+      max-height: 200px;
+      border-radius: 8px;
+      border: 2px solid var(--gold-light);
+    }
+
+    .submit-btn {
+      background: linear-gradient(45deg, var(--gold-dark), #7a6c12);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .submit-btn:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: var(--gold-light);
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    .help-text {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 0.25rem;
+    }
+
+    .success-message {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4caf50;
+      color: #4caf50;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .upload-progress {
+      background: rgba(33, 150, 243, 0.2);
+      border: 1px solid #2196f3;
+      color: #2196f3;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
+    <div class="nav-container">
+      <div class="nav-logo"><img id="logo" title="logo" src="assets/glogo.png"><h3 id="navtitle"> ArchaeoBase</h3></div>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Buscar</a></li>
+        <li><a href="register.html" class="nav-link active">Registrar Artefato</a></li>
+        <li><a href="abouts/about-project.html" class="nav-link">Sobre o Site</a></li>
+        <li><a href="abouts/about-project.html#about-team" class="nav-link">Sobre Nós</a></li>
+        <li><a href="season/project.html" class="nav-link" target="_blank" rel="noopener">Sobre o Projeto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="registration-form">
+    <div class="form-container">
+      <h1 style="text-align: center; margin-bottom: 2rem;">Registrar Novo Artefato</h1>
+      
+      <div id="successMessage" class="success-message">
+        Artefato registrado com sucesso!
+      </div>
+
+      <div id="uploadProgress" class="upload-progress">
+        Enviando imagem... <span id="progressText">0%</span>
+      </div>
+
+      <form id="artifactForm">
+        <div class="form-group">
+          <label for="name">Nome do Artefato *</label>
+          <input type="text" id="name" name="name" required>
+          <div class="help-text">Nome principal do artefato (ex: "Lego 32140 Black")</div>
+        </div>
+
+        <div class="form-group">
+          <label for="alias">Apelidos/Aliases</label>
+          <input type="text" id="alias" name="alias">
+          <div class="help-text">Separe com vírgulas (ex: "L 2x4, L Pequeno, Peça L")</div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição *</label>
+          <textarea id="description" name="description" required></textarea>
+          <div class="help-text">Descrição detalhada do artefato</div>
+        </div>
+
+        <div class="form-group">
+          <label for="image">Imagem do Artefato</label>
+          <input type="file" id="image" name="image" accept="image/*">
+          <div class="help-text">Envie uma imagem do artefato (JPEG, PNG, WebP - Máx. 5MB)</div>
+          <div id="imagePreview" class="file-preview"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="tags">Tags *</label>
+          <input type="text" id="tags" name="tags" required>
+          <div class="help-text">Separe com vírgulas (ex: "lego, estrutural, L, preto")</div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Registrar Artefato</button>
+      </form>
+    </div>
+  </main>
+
+  <footer id="footer" role="contentinfo" tabindex="-1" class="footer-section">
+    <div class="footer-container">
+      <h3><strong>IMMORTALIS!!</strong></h3>
+      <p>FIRST Age</p>
+      <p>FIRST <i>LEGO</i> League <strong>Challenge</strong></p>
+      <p><em>UNEARTHED 25-26</em></p>
+      <p><a href="https://www.instagram.com/equipe_immortalis/">@equipe_immortalis</a></p>
+      <p><a href="mailto:equipeimmortalis5821@gmail.com">equipeimmortalis5821@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+        }
+        reader.readAsDataURL(file);
+      } else {
+        imagePreview.innerHTML = '';
+      }
+    });
+
+    const form = document.getElementById('artifactForm');
+    const successMessage = document.getElementById('successMessage');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressText = document.getElementById('progressText');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Registrando...';
+
+      const formData = new FormData(form);
+      const imageFile = formData.get('image');
+      
+      let imageUrl = null;
+
+      try {
+        // If an image was uploaded, upload it to Supabase Storage first
+        if (imageFile && imageFile.size > 0) {
+          uploadProgress.style.display = 'block';
+          
+          // Generate unique filename
+          const fileExt = imageFile.name.split('.').pop();
+          const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+          
+          const { data: uploadData, error: uploadError } = await window.supabase.storage
+            .from('artifact-images')
+            .upload(fileName, imageFile, {
+              cacheControl: '3600',
+              upsert: false
+            });
+
+          if (uploadError) throw uploadError;
+
+          // Get public URL
+          const { data: urlData } = window.supabase.storage
+            .from('artifact-images')
+            .getPublicUrl(fileName);
+
+          imageUrl = urlData.publicUrl;
+          uploadProgress.style.display = 'none';
+        }
+
+        // Prepare artifact data
+        const artifactData = {
+          name: formData.get('name'),
+          alias: formData.get('alias').split(',').map(a => a.trim()).filter(a => a),
+          description: formData.get('description'),
+          img: imageUrl, // Use the uploaded image URL or null
+          tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t)
+        };
+
+        // Insert into database
+        const { data, error } = await window.supabase
+          .from('artifacts')
+          .insert([artifactData])
+          .select();
+
+        if (error) throw error;
+
+        successMessage.style.display = 'block';
+        form.reset();
+        imagePreview.innerHTML = '';
+        
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Registrar Artefato';
+        
+        setTimeout(() => {
+          successMessage.style.display = 'none';
+        }, 5000);
+
+      } catch (error) {
+        console.error('Error registering artifact:', error);
+        alert('Erro ao registrar artefato: ' + error.message);
+        
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Registrar Artefato';
+        uploadProgress.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

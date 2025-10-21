@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ArchaeoBase by Immortalis</title>
-  <link rel="stylesheet" href="../ArchaeoBase/home/style.css" />
+  <link rel="stylesheet" href="home/style.css" />
   <link rel="icon" href="assets/logo.png" type="image/png">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <!--body-->
   <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
     <div class="nav-container">
       <div class="nav-logo"><img id="logo" title="logo" src="assets/glogo.png"><h3 id="navtitle"> ArchaeoBase</h3></div>
@@ -19,6 +19,7 @@
       </button>
       <ul class="nav-menu" id="navMenu">
         <li><a href="#intro" class="nav-link active">Buscar</a></li>
+        <li><a href="register.html" class="nav-link">Registrar Artefato</a></li>
         <li><a href="abouts/about-project.html" class="nav-link">Sobre o Site</a></li>
         <li><a href="abouts/about-project.html#about-team" class="nav-link">Sobre Nós</a></li>
         <li><a href="season/project.html" class="nav-link" target="_blank" rel="noopener">Sobre o Projeto</a></li>
@@ -26,22 +27,20 @@
     </div>
   </nav>
 
-  <!-- Intro -->
   <section id="intro" tabindex="-1">
     <div class="sections-bg intro-bg">
       <h1 id="title">ArchaeoBase by Immortalis</h1>
       <form id="searchForm" role="search">
-        <input type="search" id="searchInput" placeholder="Busque artefatos por tags, ano, cultura..." aria-label="Buscar artefatos" />
+        <input type="search" id="searchInput" placeholder="Busque artefatos por tags, nome, alias..." aria-label="Buscar artefatos" />
         <button type="submit" id="btnSubmit">Buscar</button>
       </form>
       <br>
       <p id="subtitle">Descubra e explore artefatos usando nossa busca inteligente por tags. Explore a história de uma forma inédita.
-        <i><br>De quais maneiras a tecnologia e a creatividade podem ajudar a aumentar a comunicação no contexto arqueológico, auxiliando na padronização dos processos como catalogação, datação, identificação e excavação?</i>
+        <i><br>De quais maneiras a tecnologia e a criatividade podem ajudar a aumentar a comunicação no contexto arqueológico?</i>
       </p>  
       
-      <!-- Search Results -->
       <div id="searchResults" class="search-results" style="display: none;">
-        <h2 id="searchResults title">Resultados da Busca</h2>
+        <h2>Resultados da Busca</h2>
         <div id="resultsContainer" class="results-container"></div>
       </div>
     </div>
@@ -58,6 +57,13 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const URL = 'https://kaefhycyvuwoozlwakfo.supabase.co'
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY'
+    window.supabase = window.supabase.createClient(URL, KEY)
+    if (supabase) console.log('Supabase instance created!')
+  </script>
   <script src="home/script.js"></script>
 </body>
 </html>
