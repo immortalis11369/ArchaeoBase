@@ -30,6 +30,8 @@ function searchArtifacts(query) {
         if (artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
         if (artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
         // if (artifact.description.toLowerCase().includes(searchTerm)) return true;
+        // tirei essa parte por que algumas pesquisas entregavam itens indesejados, como "conector" entregava
+        // o V, pois ele tem a palavra conector na descrição.
         return false;
     });
 }
