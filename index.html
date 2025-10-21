@@ -6,12 +6,11 @@
   <title>ArchaeoBase by Immortalis</title>
   <link rel="stylesheet" href="home/style.css" />
   <link rel="icon" href="assets/logo.png" type="image/png">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
     <div class="nav-container">
-      <div class="nav-logo"><img id="logo" title="logo" src="assets/glogo.png"><h3 id="navtitle"> ArchaeoBase</h3></div>
+      <div class="nav-logo"><img id="logo" title="logo" src="assets/glogo.png" alt="Logo ArchaeoBase"><h3 id="navtitle"> ArchaeoBase</h3></div>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
         <span class="hamburger"></span>
         <span class="hamburger"></span>
@@ -58,11 +57,43 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const URL = 'https://kaefhycyvuwoozlwakfo.supabase.co'
-    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY'
-    window.supabase = window.supabase.createClient(URL, KEY)
-    if (supabase) console.log('Supabase instance created!')
+  <script type="module">
+    const SUPABASE_URL = 'https://kaefhycyvuwoozlwakfo.supabase.co'
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY'
+    
+    try {
+      if (typeof supabase === 'undefined') {
+        console.error('Biblioteca Supabase não carregada');
+        throw new Error('Biblioteca Supabase não carregada');
+      }
+      
+      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: {
+          persistSession: false
+        }
+      });
+      
+      console.log('Supabase client criado com sucesso!');
+      
+      // Teste a conexão
+      const { data, error } = await window.supabase
+        .from('artefatos')
+        .select('*')
+        .limit(1);
+        
+      if (error) {
+        console.error('Erro ao testar conexão:', error);
+      } else {
+        console.log('Conexão com Supabase funcionando!');
+      }
+      
+    } catch (error) {
+      console.error('Erro ao inicializar Supabase:', error);
+      const errorElement = document.createElement('div');
+      errorElement.style.cssText = 'background: #ffebee; color: #c62828; padding: 10px; margin: 10px; border-radius: 4px;';
+      errorElement.innerHTML = '<strong>Erro de conexão:</strong> Não foi possível conectar ao banco de dados. Tente recarregar a página.';
+      document.body.prepend(errorElement);
+    }
   </script>
   <script src="home/script.js"></script>
 </body>
