@@ -128,44 +128,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Search functionality
     function searchArtifacts(query) {
-			if (!query.trim()) return [];
+    if (!query.trim()) return [];
 
-			let results = [];
-			const querySlices = query.split(", ");
-			
-			querySlices.forEach(querySlice => {
-					const searchTerm = querySlice.toLowerCase().trim();
-					const tagonly = searchTerm.startsWith('#');
-					const aliasonly = searchTerm.startsWith('@');
-					
-					const cleanSearchTerm = searchTerm.replace(/^[@#]/, '');
-					
-					const filtered = artifactsData.filter(artifact => {
-							if (tagonly) {
-									return artifact.tags && artifact.tags.some(tag => 
-											tag.toLowerCase().includes(cleanSearchTerm)
-									);
-							}
-							
-							if (aliasonly) {
-									return artifact.alias && artifact.alias.some(alias => 
-											alias.toLowerCase().includes(cleanSearchTerm)
-									);
-							}
-							
-							if (artifact.name && artifact.name.toLowerCase().includes(searchTerm)) return true;
-							if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
-							if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
-						
-							return false;
-					});
-					
-					results.push(...filtered);
-			});
-			
-			return results.filter((artifact, index, self) => 
-        index === self.findIndex(a => a.id === artifact.id)
-    	);
+    let results = [];
+    const querySlices = query.split(", ");
+    
+    querySlices.forEach(querySlice => {
+        if (querySlice.includes('&')) {
+            results.push(...handleAndSearch(querySlice));
+        } else {  
+            results.push(...handleOrSearch(querySlice));
+        }
+    });
+    
+    return removeDuplicates(results);
+}
+
+function handleAndSearch(querySlice) {
+    const andTerms = querySlice.split('&').map(term => term.trim());
+    
+    return artifactsData.filter(artifact => {
+        return andTerms.every(term => matchesSearchTerm(artifact, term));
+    });
+}
+
+	function handleOrSearch(querySlice) {
+			return artifactsData.filter(artifact => 
+					matchesSearchTerm(artifact, querySlice)
+			);
+	}
+
+		function matchesSearchTerm(artifact, term) {
+				const searchTerm = term.toLowerCase().trim();
+				const tagonly = searchTerm.startsWith('#');
+				const aliasonly = searchTerm.startsWith('@');
+				const cleanSearchTerm = searchTerm.replace(/^[@#]/, '');
+				
+				if (tagonly) {
+						return artifact.tags?.some(tag => 
+								tag.toLowerCase().includes(cleanSearchTerm)
+						);
+				}
+				
+				if (aliasonly) {
+						return artifact.alias?.some(alias => 
+								alias.toLowerCase().includes(cleanSearchTerm)
+						);
+				}
+				
+				return (
+						artifact.name?.toLowerCase().includes(searchTerm) ||
+						artifact.alias?.some(alias => alias.toLowerCase().includes(searchTerm)) ||
+						artifact.tags?.some(tag => tag.toLowerCase().includes(searchTerm))
+				);
+		}
+
+		function removeDuplicates(results) {
+				return results.filter((artifact, index, self) => 
+						index === self.findIndex(a => a.id === artifact.id)
+				);
 		}
 
     function displayResults(results, searchTerm) {
