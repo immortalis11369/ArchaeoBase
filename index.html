@@ -10,7 +10,7 @@
     .conveyor-belt {
       position: relative;
       width: 100%;
-      height: 280px;
+      height: 200px;
       background: linear-gradient(90deg, rgba(44, 62, 80, 0.8), rgba(231, 192, 63, 0.2), rgba(44, 62, 80, 0.8));
       border: 3px solid var(--gold-light);
       border-radius: 15px;
@@ -21,32 +21,32 @@
 
     .belt-track {
       position: absolute;
-      top: 15%;
+      top: 25px;
       left: 0;
       width: 100%;
-      height: 120px;
-      transform: translateY(-50%);
+      height: 150px;
       display: flex;
       align-items: center;
-      gap: 20px;
+      justify-content: center;
     }
 
     .belt-item {
-      flex: 0 0 100px;
-      height: 90px;
+      width: 120px;
+      height: 120px;
       background: rgba(255, 255, 255, 0.1);
       border: 2px solid var(--gold-light);
       border-radius: 10px;
-      margin: 0 5px;
+      margin: 0 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0.5rem;
+      padding: 0.8rem;
       transition: all 0.3s ease;
       cursor: pointer;
-      position: relative;
+      position: absolute;
       backdrop-filter: blur(10px);
+      flex-shrink: 0;
     }
 
     .belt-item:hover {
@@ -56,54 +56,51 @@
     }
 
     .belt-item img {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       object-fit: cover;
       border-radius: 6px;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.4rem;
       border: 1px solid var(--gold-dark);
     }
 
     .belt-item .artifact-name {
       font-weight: bold;
       color: var(--gold-light);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       text-align: center;
       margin: 0;
       line-height: 1.1;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .belt-item .artifact-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2px;
-      justify-content: center;
-      margin-top: 0.2rem;
-    }
-
-    .belt-item .artifact-tag {
-      background: var(--gold-dark);
-      color: var(--black);
-      padding: 0.1rem 0.3rem;
-      border-radius: 8px;
-      font-size: 0.5rem;
-      font-weight: 600;
+      display: none;
     }
 
     @keyframes moveBelt {
       0% {
-        transform: translateX(0);
+        transform: translateX(100vw);
       }
       100% {
-        transform: translateX(-120px);
+        transform: translateX(-100vw);
       }
     }
 
-    .belt-moving {
+    .belt-moving .belt-item {
       animation: moveBelt 20s linear infinite;
     }
 
-    .belt-paused {
+    .belt-moving .belt-item:nth-child(1) { animation-delay: 0s; }
+    .belt-moving .belt-item:nth-child(2) { animation-delay: 4s; }
+    .belt-moving .belt-item:nth-child(3) { animation-delay: 8s; }
+    .belt-moving .belt-item:nth-child(4) { animation-delay: 12s; }
+    .belt-moving .belt-item:nth-child(5) { animation-delay: 16s; }
+
+    .belt-paused .belt-item {
       animation-play-state: paused;
     }
 
@@ -149,21 +146,6 @@
     .belt-edge-right {
       right: 0;
       background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.95));
-    }
-
-    .belt-guide {
-      position: absolute;
-      top: 65%;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
-      opacity: 0.3;
-    }
-
-    .belt-guide-top {
-      top: 15%;
-      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
     }
   </style>
 </head>
@@ -212,11 +194,9 @@
         Confira artefatos registrados aleatórios!
       </p>
       
-      <div class="conveyor-belt">
+      <div class="conveyor-belt" id="conveyorBelt">
         <div class="belt-edge belt-edge-left"></div>
         <div class="belt-edge belt-edge-right"></div>
-        <div class="belt-guide belt-guide-top"></div>
-        <div class="belt-guide"></div>
         <div class="belt-track" id="beltTrack">
         </div>
       </div>
@@ -281,6 +261,7 @@
 
     function initializeConveyorBelt(artifacts) {
       const beltTrack = document.getElementById('beltTrack');
+      const conveyorBelt = document.getElementById('conveyorBelt');
       let currentItems = [];
       let isPaused = false;
 
@@ -289,32 +270,34 @@
         return shuffled.slice(0, 5);
       }
 
-      function createBeltItem(artifact) {
-        return `
-          <div class="belt-item" data-id="${artifact.id}">
-            <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}">
-            <p class="artifact-name">${artifact.name}</p>
-            <div class="artifact-tags">
-              ${(artifact.tags || []).slice(0, 1).map(tag => 
-                `<span class="artifact-tag">${tag}</span>`
-              ).join('')}
-            </div>
-          </div>
+      function createBeltItem(artifact, index) {
+        const item = document.createElement('div');
+        item.className = 'belt-item';
+        item.setAttribute('data-id', artifact.id);
+        
+        item.innerHTML = `
+          <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}">
+          <p class="artifact-name">${artifact.name}</p>
         `;
+        
+        item.addEventListener('click', () => {
+          const artifactId = item.getAttribute('data-id');
+          window.location.href = `artifact-details.html?id=${artifactId}`;
+        });
+
+        return item;
       }
 
       function updateBelt() {
         currentItems = getRandomArtifacts();
-        beltTrack.innerHTML = currentItems.map(artifact => createBeltItem(artifact)).join('');
+        beltTrack.innerHTML = '';
         
-        beltTrack.querySelectorAll('.belt-item').forEach(item => {
-          item.addEventListener('click', () => {
-            const artifactId = item.getAttribute('data-id');
-            window.location.href = `artifact-details.html?id=${artifactId}`;
-          });
+        currentItems.forEach((artifact, index) => {
+          const item = createBeltItem(artifact, index);
+          beltTrack.appendChild(item);
         });
 
-        beltTrack.classList.add('belt-moving');
+        conveyorBelt.classList.add('belt-moving');
       }
 
       updateBelt();
@@ -328,10 +311,10 @@
       document.getElementById('pauseBelt').addEventListener('click', () => {
         isPaused = !isPaused;
         if (isPaused) {
-          beltTrack.classList.add('belt-paused');
+          conveyorBelt.classList.add('belt-paused');
           document.getElementById('pauseBelt').textContent = 'Continuar';
         } else {
-          beltTrack.classList.remove('belt-paused');
+          conveyorBelt.classList.remove('belt-paused');
           document.getElementById('pauseBelt').textContent = 'Pausar';
         }
       });
@@ -339,7 +322,7 @@
       document.getElementById('shuffleBelt').addEventListener('click', () => {
         updateBelt();
         if (isPaused) {
-          beltTrack.classList.add('belt-paused');
+          conveyorBelt.classList.add('belt-paused');
         }
       });
     }
