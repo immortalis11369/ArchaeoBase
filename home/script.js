@@ -131,12 +131,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!query.trim()) return [];
 
         const searchTerm = query.toLowerCase().trim();
-        
+				const tagonly = searchTerm.startsWith('#')
+				const aliasonly = searchTerm.startsWith('@')
+
         return artifactsData.filter(artifact => {
-            if (artifact.name && artifact.name.toLowerCase().includes(searchTerm)) return true;
-            if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
-            if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
-            if (artifact.description && artifact.description.toLowerCase().includes(searchTerm)) return true;
+            if (artifact.name && artifact.name.toLowerCase().includes(searchTerm) && !tagonly && !aliasonly) return true;
+            if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm) && !tagonly)) return true;
+            if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm) && !aliasonly)) return true;
+            // if (artifact.description && artifact.description.toLowerCase().includes(searchTerm)) return true;
             return false;
         });
     }
