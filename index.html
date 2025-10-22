@@ -11,7 +11,7 @@
     .conveyor-belt {
       position: relative;
       width: 100%;
-      height: 300px;
+      height: 280px;
       background: linear-gradient(90deg, rgba(44, 62, 80, 0.8), rgba(231, 192, 63, 0.2), rgba(44, 62, 80, 0.8));
       border: 3px solid var(--gold-light);
       border-radius: 15px;
@@ -22,28 +22,28 @@
 
     .belt-track {
       position: absolute;
-      top: 50%;
+      top: 35%; /* Moved higher up */
       left: 0;
       width: 100%;
       height: 180px;
       transform: translateY(-50%);
       display: flex;
       align-items: center;
-      gap: 0;
+      gap: 25px; /* Increased spacing between cards */
     }
 
     .belt-item {
-      flex: 0 0 180px;
-      height: 160px;
+      flex: 0 0 200px; /* Slightly wider cards */
+      height: 170px; /* Slightly taller cards */
       background: rgba(255, 255, 255, 0.1);
       border: 2px solid var(--gold-light);
-      border-radius: 12px;
-      margin: 0 5px;
+      border-radius: 15px;
+      margin: 0 10px; /* More margin between cards */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 1.2rem;
       transition: all 0.3s ease;
       cursor: pointer;
       position: relative;
@@ -51,57 +51,58 @@
     }
 
     .belt-item:hover {
-      transform: translateY(-10px) scale(1.05);
+      transform: translateY(-15px) scale(1.08); /* More dramatic hover lift */
       background: rgba(231, 192, 63, 0.2);
-      box-shadow: 0 10px 25px rgba(231, 192, 63, 0.4);
+      box-shadow: 0 15px 30px rgba(231, 192, 63, 0.5);
     }
 
     .belt-item img {
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
       object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
+      border-radius: 10px;
+      margin-bottom: 0.8rem;
       border: 2px solid var(--gold-dark);
     }
 
     .belt-item .artifact-name {
       font-weight: bold;
       color: var(--gold-light);
-      font-size: 0.9rem;
+      font-size: 1rem;
       text-align: center;
       margin: 0;
+      line-height: 1.2;
     }
 
     .belt-item .artifact-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 2px;
+      gap: 4px;
       justify-content: center;
-      margin-top: 0.3rem;
+      margin-top: 0.5rem;
     }
 
     .belt-item .artifact-tag {
       background: var(--gold-dark);
       color: var(--black);
-      padding: 0.1rem 0.4rem;
-      border-radius: 10px;
-      font-size: 0.6rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
       font-weight: 600;
     }
 
-    /* Conveyor belt animation */
+    /* Conveyor belt animation - adjusted for wider spacing */
     @keyframes moveBelt {
       0% {
         transform: translateX(0);
       }
       100% {
-        transform: translateX(-180px);
+        transform: translateX(-225px); /* Adjusted for wider cards */
       }
     }
 
     .belt-moving {
-      animation: moveBelt 20s linear infinite;
+      animation: moveBelt 25s linear infinite; /* Slightly slower for better visibility */
     }
 
     .belt-paused {
@@ -112,45 +113,62 @@
     .belt-controls {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
     }
 
     .belt-btn {
       background: var(--gold-dark);
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s ease;
+      font-size: 1rem;
     }
 
     .belt-btn:hover {
       background: var(--gold-light);
       color: var(--black);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(231, 192, 63, 0.3);
     }
 
     /* Conveyor belt edges */
     .belt-edge {
       position: absolute;
       top: 0;
-      width: 50px;
+      width: 60px;
       height: 100%;
-      background: linear-gradient(90deg, var(--gold-dark), transparent);
       z-index: 2;
     }
 
     .belt-edge-left {
       left: 0;
-      background: linear-gradient(90deg, rgba(44, 62, 80, 0.9), transparent);
+      background: linear-gradient(90deg, rgba(44, 62, 80, 0.95), transparent);
     }
 
     .belt-edge-right {
       right: 0;
-      background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.9));
+      background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.95));
+    }
+
+    /* Additional decorative elements */
+    .belt-guide {
+      position: absolute;
+      top: 65%; /* Lower guide line */
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+      opacity: 0.3;
+    }
+
+    .belt-guide-top {
+      top: 35%; /* Upper guide line at card level */
+      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
     }
   </style>
 </head>
@@ -203,14 +221,16 @@
       <div class="conveyor-belt">
         <div class="belt-edge belt-edge-left"></div>
         <div class="belt-edge belt-edge-right"></div>
+        <div class="belt-guide belt-guide-top"></div>
+        <div class="belt-guide"></div>
         <div class="belt-track" id="beltTrack">
           <!-- Belt items will be inserted here by JavaScript -->
         </div>
       </div>
       
       <div class="belt-controls">
-        <button class="belt-btn" id="pauseBelt">Pausar ⏸️</button>
-        <button class="belt-btn" id="shuffleBelt">Embaralhar 🔀</button>
+        <button class="belt-btn" id="pauseBelt">Pausar</button>
+        <button class="belt-btn" id="shuffleBelt">Embaralhar</button>
       </div>
     </div>
   </section>
@@ -246,6 +266,7 @@
       
       console.log('Supabase client criado com sucesso!');
       
+      // Load and initialize conveyor belt
       loadConveyorBelt();
       
     } catch (error) {
@@ -256,7 +277,6 @@
       document.body.prepend(errorElement);
     }
 
-    // sistema de 'vitrine' baseado em um conveyor belt!!
     async function loadConveyorBelt() {
       try {
         const { data: artifacts, error } = await window.supabase
@@ -278,11 +298,13 @@
       let currentItems = [];
       let isPaused = false;
 
-      function shuffle() {
+      // Function to get random artifacts
+      function getRandomArtifacts() {
         const shuffled = [...artifacts].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 5);
       }
 
+      // Function to create belt item HTML
       function createBeltItem(artifact) {
         return `
           <div class="belt-item" data-id="${artifact.id}">
@@ -297,10 +319,12 @@
         `;
       }
 
+      // Function to update belt with new random items
       function updateBelt() {
-        currentItems = shuffle();
+        currentItems = getRandomArtifacts();
         beltTrack.innerHTML = currentItems.map(artifact => createBeltItem(artifact)).join('');
         
+        // Add click events to belt items
         beltTrack.querySelectorAll('.belt-item').forEach(item => {
           item.addEventListener('click', () => {
             const artifactId = item.getAttribute('data-id');
@@ -308,29 +332,29 @@
           });
         });
 
+        // Start animation
         beltTrack.classList.add('belt-moving');
       }
 
+      // Initial load
       updateBelt();
 
-      const trocar = () => { 
-        setInterval(() => {
-          if (!isPaused) {
-            updateBelt();
-          }
-        }, 30000)
-      };
+      // Auto-shuffle every 30 seconds
+      setInterval(() => {
+        if (!isPaused) {
+          updateBelt();
+        }
+      }, 30000);
 
-      trocar()
-
+      // Control buttons
       document.getElementById('pauseBelt').addEventListener('click', () => {
         isPaused = !isPaused;
         if (isPaused) {
           beltTrack.classList.add('belt-paused');
-          document.getElementById('pauseBelt').textContent = 'Continuar ▶️';
+          document.getElementById('pauseBelt').textContent = 'Continuar';
         } else {
           beltTrack.classList.remove('belt-paused');
-          document.getElementById('pauseBelt').textContent = 'Pausar ⏸️';
+          document.getElementById('pauseBelt').textContent = 'Pausar';
         }
       });
 

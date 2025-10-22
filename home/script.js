@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return artifactsData.filter(artifact => {
             if (artifact.name && artifact.name.toLowerCase().includes(searchTerm) && !tagonly && !aliasonly) return true;
             if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm) && !tagonly)) return true;
-            if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm) && !aliasonly)) return true;
+            if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm.replace('#', "")) && !aliasonly)) return true;
             // if (artifact.description && artifact.description.toLowerCase().includes(searchTerm)) return true;
             return false;
         });
