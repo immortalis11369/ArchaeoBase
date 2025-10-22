@@ -234,7 +234,7 @@ function handleAndSearch(querySlice) {
         });
     }
 
-    // View artifact details
+    // detales do artefetuu
     function viewArtifactDetails(artifactId, searchTerm) {
         if (!artifactId) {
             alert('Erro: ID do artefato não encontrado');
@@ -247,7 +247,6 @@ function handleAndSearch(querySlice) {
         window.location.href = url;
     }
 
-    // Handle search form submission
     function handleSearch(event) {
         event.preventDefault();
         
@@ -266,7 +265,6 @@ function handleAndSearch(querySlice) {
         }
     }
 
-    // Initialize everything
     async function initialize() {
         await loadArtifacts();
         
