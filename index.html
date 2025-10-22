@@ -27,7 +27,6 @@
       height: 150px;
       display: flex;
       align-items: center;
-      justify-content: center;
     }
 
     .belt-item {
@@ -47,6 +46,7 @@
       position: absolute;
       backdrop-filter: blur(10px);
       flex-shrink: 0;
+      left: 100vw;
     }
 
     .belt-item:hover {
@@ -77,28 +77,24 @@
       white-space: nowrap;
     }
 
-    .belt-item .artifact-tags {
-      display: none;
-    }
-
     @keyframes moveBelt {
       0% {
-        transform: translateX(100vw);
+        left: 100vw;
       }
       100% {
-        transform: translateX(-100vw);
+        left: -200px;
       }
     }
 
     .belt-moving .belt-item {
-      animation: moveBelt 20s linear infinite;
+      animation: moveBelt 15s linear infinite;
     }
 
     .belt-moving .belt-item:nth-child(1) { animation-delay: 0s; }
-    .belt-moving .belt-item:nth-child(2) { animation-delay: 4s; }
-    .belt-moving .belt-item:nth-child(3) { animation-delay: 8s; }
-    .belt-moving .belt-item:nth-child(4) { animation-delay: 12s; }
-    .belt-moving .belt-item:nth-child(5) { animation-delay: 16s; }
+    .belt-moving .belt-item:nth-child(2) { animation-delay: 3s; }
+    .belt-moving .belt-item:nth-child(3) { animation-delay: 6s; }
+    .belt-moving .belt-item:nth-child(4) { animation-delay: 9s; }
+    .belt-moving .belt-item:nth-child(5) { animation-delay: 12s; }
 
     .belt-paused .belt-item {
       animation-play-state: paused;
@@ -270,7 +266,7 @@
         return shuffled.slice(0, 5);
       }
 
-      function createBeltItem(artifact, index) {
+      function createBeltItem(artifact) {
         const item = document.createElement('div');
         item.className = 'belt-item';
         item.setAttribute('data-id', artifact.id);
@@ -293,7 +289,7 @@
         beltTrack.innerHTML = '';
         
         currentItems.forEach((artifact, index) => {
-          const item = createBeltItem(artifact, index);
+          const item = createBeltItem(artifact);
           beltTrack.appendChild(item);
         });
 
