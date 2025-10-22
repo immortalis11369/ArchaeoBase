@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (!query.trim()) return [];
 
 			let results = [];
-			const querySlices = query.split(", "); // Fixed: use split instead of slice
+			const querySlices = query.split(", ");
 			
 			querySlices.forEach(querySlice => {
 					const searchTerm = querySlice.toLowerCase().trim();
