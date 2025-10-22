@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="home/style.css" />
   <link rel="icon" href="assets/logo.png" type="image/png">
   <style>
-    /* Conveyor Belt Styles */
     .conveyor-belt {
       position: relative;
       width: 100%;
@@ -22,28 +21,28 @@
 
     .belt-track {
       position: absolute;
-      top: 35%; /* Moved higher up */
+      top: 15%;
       left: 0;
       width: 100%;
-      height: 180px;
+      height: 120px;
       transform: translateY(-50%);
       display: flex;
       align-items: center;
-      gap: 25px; /* Increased spacing between cards */
+      gap: 20px;
     }
 
     .belt-item {
-      flex: 0 0 200px; /* Slightly wider cards */
-      height: 170px; /* Slightly taller cards */
+      flex: 0 0 100px;
+      height: 90px;
       background: rgba(255, 255, 255, 0.1);
       border: 2px solid var(--gold-light);
-      border-radius: 15px;
-      margin: 0 10px; /* More margin between cards */
+      border-radius: 10px;
+      margin: 0 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.2rem;
+      padding: 0.5rem;
       transition: all 0.3s ease;
       cursor: pointer;
       position: relative;
@@ -51,96 +50,93 @@
     }
 
     .belt-item:hover {
-      transform: translateY(-15px) scale(1.08); /* More dramatic hover lift */
+      transform: translateY(-8px) scale(1.05);
       background: rgba(231, 192, 63, 0.2);
-      box-shadow: 0 15px 30px rgba(231, 192, 63, 0.5);
+      box-shadow: 0 8px 20px rgba(231, 192, 63, 0.4);
     }
 
     .belt-item img {
-      width: 90px;
-      height: 90px;
+      width: 50px;
+      height: 50px;
       object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 0.8rem;
-      border: 2px solid var(--gold-dark);
+      border-radius: 6px;
+      margin-bottom: 0.3rem;
+      border: 1px solid var(--gold-dark);
     }
 
     .belt-item .artifact-name {
       font-weight: bold;
       color: var(--gold-light);
-      font-size: 1rem;
+      font-size: 0.7rem;
       text-align: center;
       margin: 0;
-      line-height: 1.2;
+      line-height: 1.1;
     }
 
     .belt-item .artifact-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 2px;
       justify-content: center;
-      margin-top: 0.5rem;
+      margin-top: 0.2rem;
     }
 
     .belt-item .artifact-tag {
       background: var(--gold-dark);
       color: var(--black);
-      padding: 0.2rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.7rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 8px;
+      font-size: 0.5rem;
       font-weight: 600;
     }
 
-    /* Conveyor belt animation - adjusted for wider spacing */
     @keyframes moveBelt {
       0% {
         transform: translateX(0);
       }
       100% {
-        transform: translateX(-225px); /* Adjusted for wider cards */
+        transform: translateX(-120px);
       }
     }
 
     .belt-moving {
-      animation: moveBelt 25s linear infinite; /* Slightly slower for better visibility */
+      animation: moveBelt 20s linear infinite;
     }
 
     .belt-paused {
       animation-play-state: paused;
     }
 
-    /* Conveyor belt controls */
     .belt-controls {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
+      gap: 1rem;
+      margin-top: 1rem;
     }
 
     .belt-btn {
       background: var(--gold-dark);
       color: white;
       border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 25px;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s ease;
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
 
     .belt-btn:hover {
       background: var(--gold-light);
       color: var(--black);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(231, 192, 63, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 3px 10px rgba(231, 192, 63, 0.3);
     }
 
-    /* Conveyor belt edges */
     .belt-edge {
       position: absolute;
       top: 0;
-      width: 60px;
+      width: 50px;
       height: 100%;
       z-index: 2;
     }
@@ -155,19 +151,18 @@
       background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.95));
     }
 
-    /* Additional decorative elements */
     .belt-guide {
       position: absolute;
-      top: 65%; /* Lower guide line */
+      top: 65%;
       left: 0;
       width: 100%;
-      height: 2px;
+      height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
       opacity: 0.3;
     }
 
     .belt-guide-top {
-      top: 35%; /* Upper guide line at card level */
+      top: 15%;
       background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
     }
   </style>
@@ -217,14 +212,12 @@
         Confira artefatos registrados aleatórios!
       </p>
       
-      <!-- Conveyor Belt -->
       <div class="conveyor-belt">
         <div class="belt-edge belt-edge-left"></div>
         <div class="belt-edge belt-edge-right"></div>
         <div class="belt-guide belt-guide-top"></div>
         <div class="belt-guide"></div>
         <div class="belt-track" id="beltTrack">
-          <!-- Belt items will be inserted here by JavaScript -->
         </div>
       </div>
       
@@ -246,7 +239,6 @@
     </div>
   </footer>
 
-  <!-- Importar a Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module">
     const SUPABASE_URL = 'https://kaefhycyvuwoozlwakfo.supabase.co'
@@ -254,7 +246,6 @@
     
     try {
       if (typeof supabase === 'undefined') {
-        console.error('Biblioteca Supabase não carregada');
         throw new Error('Biblioteca Supabase não carregada');
       }
       
@@ -264,13 +255,9 @@
         }
       });
       
-      console.log('Supabase client criado com sucesso!');
-      
-      // Load and initialize conveyor belt
       loadConveyorBelt();
       
     } catch (error) {
-      console.error('Erro ao inicializar Supabase:', error);
       const errorElement = document.createElement('div');
       errorElement.style.cssText = 'background: #ffebee; color: #c62828; padding: 10px; margin: 10px; border-radius: 4px;';
       errorElement.innerHTML = '<strong>Erro de conexão:</strong> Não foi possível conectar ao banco de dados. Tente recarregar a página.';
@@ -289,7 +276,6 @@
           initializeConveyorBelt(artifacts);
         }
       } catch (error) {
-        console.error('Error loading artifacts for conveyor belt:', error);
       }
     }
 
@@ -298,20 +284,18 @@
       let currentItems = [];
       let isPaused = false;
 
-      // Function to get random artifacts
       function getRandomArtifacts() {
         const shuffled = [...artifacts].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 5);
       }
 
-      // Function to create belt item HTML
       function createBeltItem(artifact) {
         return `
           <div class="belt-item" data-id="${artifact.id}">
             <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}">
             <p class="artifact-name">${artifact.name}</p>
             <div class="artifact-tags">
-              ${(artifact.tags || []).slice(0, 2).map(tag => 
+              ${(artifact.tags || []).slice(0, 1).map(tag => 
                 `<span class="artifact-tag">${tag}</span>`
               ).join('')}
             </div>
@@ -319,12 +303,10 @@
         `;
       }
 
-      // Function to update belt with new random items
       function updateBelt() {
         currentItems = getRandomArtifacts();
         beltTrack.innerHTML = currentItems.map(artifact => createBeltItem(artifact)).join('');
         
-        // Add click events to belt items
         beltTrack.querySelectorAll('.belt-item').forEach(item => {
           item.addEventListener('click', () => {
             const artifactId = item.getAttribute('data-id');
@@ -332,21 +314,17 @@
           });
         });
 
-        // Start animation
         beltTrack.classList.add('belt-moving');
       }
 
-      // Initial load
       updateBelt();
 
-      // Auto-shuffle every 30 seconds
       setInterval(() => {
         if (!isPaused) {
           updateBelt();
         }
       }, 30000);
 
-      // Control buttons
       document.getElementById('pauseBelt').addEventListener('click', () => {
         isPaused = !isPaused;
         if (isPaused) {

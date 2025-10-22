@@ -143,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Display search results with English column names
     function displayResults(results, searchTerm) {
         if (!resultsContainer) {
             console.error('resultsContainer element not found');
