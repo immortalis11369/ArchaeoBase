@@ -209,8 +209,8 @@
       </div>
       
       <div class="belt-controls">
-        <button class="belt-btn" id="pauseBelt">Pausar</button>
-        <button class="belt-btn" id="shuffleBelt">Embaralhar</button>
+        <button class="belt-btn" id="pauseBelt">Pausar ⏸️</button>
+        <button class="belt-btn" id="shuffleBelt">Embaralhar 🔀</button>
       </div>
     </div>
   </section>
@@ -327,10 +327,10 @@
         isPaused = !isPaused;
         if (isPaused) {
           beltTrack.classList.add('belt-paused');
-          document.getElementById('pauseBelt').textContent = 'Continuar';
+          document.getElementById('pauseBelt').textContent = 'Continuar ▶️';
         } else {
           beltTrack.classList.remove('belt-paused');
-          document.getElementById('pauseBelt').textContent = 'Pausar';
+          document.getElementById('pauseBelt').textContent = 'Pausar ⏸️';
         }
       });
 
