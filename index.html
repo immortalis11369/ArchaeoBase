@@ -6,6 +6,153 @@
   <title>ArchaeoBase by Immortalis</title>
   <link rel="stylesheet" href="home/style.css" />
   <link rel="icon" href="assets/logo.png" type="image/png">
+  <style>
+    /* Conveyor Belt Styles */
+    .conveyor-belt {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(90deg, rgba(44, 62, 80, 0.8), rgba(231, 192, 63, 0.2), rgba(44, 62, 80, 0.8));
+      border: 3px solid var(--gold-light);
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 2rem 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .belt-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .belt-item {
+      flex: 0 0 180px;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--gold-light);
+      border-radius: 12px;
+      margin: 0 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .belt-item:hover {
+      transform: translateY(-10px) scale(1.05);
+      background: rgba(231, 192, 63, 0.2);
+      box-shadow: 0 10px 25px rgba(231, 192, 63, 0.4);
+    }
+
+    .belt-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      border: 2px solid var(--gold-dark);
+    }
+
+    .belt-item .artifact-name {
+      font-weight: bold;
+      color: var(--gold-light);
+      font-size: 0.9rem;
+      text-align: center;
+      margin: 0;
+    }
+
+    .belt-item .artifact-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: center;
+      margin-top: 0.3rem;
+    }
+
+    .belt-item .artifact-tag {
+      background: var(--gold-dark);
+      color: var(--black);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      font-size: 0.6rem;
+      font-weight: 600;
+    }
+
+    /* Conveyor belt animation */
+    @keyframes moveBelt {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-180px);
+      }
+    }
+
+    .belt-moving {
+      animation: moveBelt 20s linear infinite;
+    }
+
+    .belt-paused {
+      animation-play-state: paused;
+    }
+
+    /* Conveyor belt controls */
+    .belt-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .belt-btn {
+      background: var(--gold-dark);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .belt-btn:hover {
+      background: var(--gold-light);
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    /* Conveyor belt edges */
+    .belt-edge {
+      position: absolute;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold-dark), transparent);
+      z-index: 2;
+    }
+
+    .belt-edge-left {
+      left: 0;
+      background: linear-gradient(90deg, rgba(44, 62, 80, 0.9), transparent);
+    }
+
+    .belt-edge-right {
+      right: 0;
+      background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.9));
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
@@ -45,6 +192,29 @@
     </div>
   </section>
 
+  <section id="vitrine" tabindex="-1">
+    <div class="sections-bg vitrine-bg">
+      <h2 id="vitrine-title">Vitrine</h2>
+      <p id="vitrine-subtitle">
+        Confira artefatos registrados aleatórios!
+      </p>
+      
+      <!-- Conveyor Belt -->
+      <div class="conveyor-belt">
+        <div class="belt-edge belt-edge-left"></div>
+        <div class="belt-edge belt-edge-right"></div>
+        <div class="belt-track" id="beltTrack">
+          <!-- Belt items will be inserted here by JavaScript -->
+        </div>
+      </div>
+      
+      <div class="belt-controls">
+        <button class="belt-btn" id="pauseBelt">Pausar</button>
+        <button class="belt-btn" id="shuffleBelt">Embaralhar</button>
+      </div>
+    </div>
+  </section>
+
   <footer id="footer" role="contentinfo" tabindex="-1" class="footer-section">
     <div class="footer-container">
       <h3><strong>IMMORTALIS!!</strong></h3>
@@ -76,17 +246,7 @@
       
       console.log('Supabase client criado com sucesso!');
       
-      // Teste a conexão
-      const { data, error } = await window.supabase
-        .from('artifacts')
-        .select('*')
-        .limit(1);
-        
-      if (error) {
-        console.error('Erro ao testar conexão:', error);
-      } else {
-        console.log('Conexão com Supabase funcionando!');
-      }
+      loadConveyorBelt();
       
     } catch (error) {
       console.error('Erro ao inicializar Supabase:', error);
@@ -94,6 +254,92 @@
       errorElement.style.cssText = 'background: #ffebee; color: #c62828; padding: 10px; margin: 10px; border-radius: 4px;';
       errorElement.innerHTML = '<strong>Erro de conexão:</strong> Não foi possível conectar ao banco de dados. Tente recarregar a página.';
       document.body.prepend(errorElement);
+    }
+
+    // sistema de 'vitrine' baseado em um conveyor belt!!
+    async function loadConveyorBelt() {
+      try {
+        const { data: artifacts, error } = await window.supabase
+          .from('artifacts')
+          .select('*');
+
+        if (error) throw error;
+
+        if (artifacts && artifacts.length > 0) {
+          initializeConveyorBelt(artifacts);
+        }
+      } catch (error) {
+        console.error('Error loading artifacts for conveyor belt:', error);
+      }
+    }
+
+    function initializeConveyorBelt(artifacts) {
+      const beltTrack = document.getElementById('beltTrack');
+      let currentItems = [];
+      let isPaused = false;
+
+      function shuffle() {
+        const shuffled = [...artifacts].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 5);
+      }
+
+      function createBeltItem(artifact) {
+        return `
+          <div class="belt-item" data-id="${artifact.id}">
+            <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}">
+            <p class="artifact-name">${artifact.name}</p>
+            <div class="artifact-tags">
+              ${(artifact.tags || []).slice(0, 2).map(tag => 
+                `<span class="artifact-tag">${tag}</span>`
+              ).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      function updateBelt() {
+        currentItems = shuffle();
+        beltTrack.innerHTML = currentItems.map(artifact => createBeltItem(artifact)).join('');
+        
+        beltTrack.querySelectorAll('.belt-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const artifactId = item.getAttribute('data-id');
+            window.location.href = `artifact-details.html?id=${artifactId}`;
+          });
+        });
+
+        beltTrack.classList.add('belt-moving');
+      }
+
+      updateBelt();
+
+      const trocar = () => { 
+        setInterval(() => {
+          if (!isPaused) {
+            updateBelt();
+          }
+        }, 30000)
+      };
+
+      trocar()
+
+      document.getElementById('pauseBelt').addEventListener('click', () => {
+        isPaused = !isPaused;
+        if (isPaused) {
+          beltTrack.classList.add('belt-paused');
+          document.getElementById('pauseBelt').textContent = 'Continuar';
+        } else {
+          beltTrack.classList.remove('belt-paused');
+          document.getElementById('pauseBelt').textContent = 'Pausar';
+        }
+      });
+
+      document.getElementById('shuffleBelt').addEventListener('click', () => {
+        updateBelt();
+        if (isPaused) {
+          beltTrack.classList.add('belt-paused');
+        }
+      });
     }
   </script>
   <script src="home/script.js"></script>
