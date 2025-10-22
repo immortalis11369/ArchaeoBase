@@ -128,20 +128,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Search functionality
     function searchArtifacts(query) {
-        if (!query.trim()) return [];
+			if (!query.trim()) return [];
 
-        const searchTerm = query.toLowerCase().trim();
-				const tagonly = searchTerm.startsWith('#')
-				const aliasonly = searchTerm.startsWith('@')
-
-        return artifactsData.filter(artifact => {
-            if (artifact.name && artifact.name.toLowerCase().includes(searchTerm) && !tagonly && !aliasonly) return true;
-            if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm) && !tagonly)) return true;
-            if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm.replace('#', "")) && !aliasonly)) return true;
-            // if (artifact.description && artifact.description.toLowerCase().includes(searchTerm)) return true;
-            return false;
-        });
-    }
+			let results = [];
+			const querySlices = query.split(", "); // Fixed: use split instead of slice
+			
+			querySlices.forEach(querySlice => {
+					const searchTerm = querySlice.toLowerCase().trim();
+					const tagonly = searchTerm.startsWith('#');
+					const aliasonly = searchTerm.startsWith('@');
+					
+					const cleanSearchTerm = searchTerm.replace(/^[@#]/, '');
+					
+					const filtered = artifactsData.filter(artifact => {
+							if (tagonly) {
+									return artifact.tags && artifact.tags.some(tag => 
+											tag.toLowerCase().includes(cleanSearchTerm)
+									);
+							}
+							
+							if (aliasonly) {
+									return artifact.alias && artifact.alias.some(alias => 
+											alias.toLowerCase().includes(cleanSearchTerm)
+									);
+							}
+							
+							if (artifact.name && artifact.name.toLowerCase().includes(searchTerm)) return true;
+							if (artifact.alias && artifact.alias.some(alias => alias.toLowerCase().includes(searchTerm))) return true;
+							if (artifact.tags && artifact.tags.some(tag => tag.toLowerCase().includes(searchTerm))) return true;
+						
+							return false;
+					});
+					
+					results.push(...filtered);
+			});
+			
+			return results.filter((artifact, index, self) => 
+        index === self.findIndex(a => a.id === artifact.id)
+    	);
+		}
 
     function displayResults(results, searchTerm) {
         if (!resultsContainer) {
