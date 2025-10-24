@@ -332,6 +332,7 @@
       auth: { persistSession: false }
     });
 
+    // Modal functionality
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImage");
     const span = document.getElementsByClassName("close")[0];
@@ -392,6 +393,7 @@
         const tags = currentArtifact.tags || [];
         const photographs = currentArtifact.photographs || [];
         
+        // Generate images HTML
         let imagesHTML = '';
         if (photographs.length > 0) {
           imagesHTML = `
@@ -559,6 +561,7 @@
       }
     }
 
+    // Function to open modal with clicked image
     window.openModal = function(src) {
       modal.style.display = "block";
       modalImg.src = src;
@@ -572,6 +575,7 @@
       
       querySlices.forEach(querySlice => {
         if (querySlice.includes('&')) {
+          // AND search
           const andTerms = querySlice.split('&').map(term => term.trim());
           const andResults = artifactsData.filter(artifact => {
             return andTerms.every(term => {
@@ -606,6 +610,7 @@
           
           results.push(...andResults);
         } else {
+          // OR search
           const searchTerm = querySlice.toLowerCase().trim();
           const tagonly = searchTerm.startsWith('#');
           const aliasonly = searchTerm.startsWith('@');
