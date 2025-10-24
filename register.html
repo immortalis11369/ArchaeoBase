@@ -65,12 +65,15 @@
 
     .file-preview {
       margin-top: 1rem;
-      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .file-preview img {
-      max-width: 200px;
-      max-height: 200px;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
       border-radius: 8px;
       border: 2px solid var(--gold-light);
     }
@@ -175,8 +178,6 @@
         color: var(--black);
     }
 
-
-
     @media (max-width: 768px) {
       .form-row {
         grid-template-columns: 1fr;
@@ -212,7 +213,7 @@
       </div>
 
       <div id="uploadProgress" class="upload-progress">
-        Enviando imagem... <span id="progressText">0%</span>
+        Enviando imagens... <span id="progressText">0%</span>
       </div>
 
       <form id="artifactForm">
@@ -370,8 +371,6 @@
         reader.onload = function(e) {
           const img = document.createElement('img');
           img.src = e.target.result;
-          img.style.maxWidth = '150px';
-          img.style.margin = '5px';
           imagePreview.appendChild(img);
         }
         reader.readAsDataURL(file);
@@ -434,8 +433,8 @@
           intervention: formData.get('intervention'),
           measurements: formData.get('measurements'),
           weight: formData.get('weight'),
-          img: imageUrls.length > 0 ? imageUrls[0] : null, // Use first image as main
-          photographs: imageUrls, // Array of all images
+          img: imageUrls.length > 0 ? imageUrls[0] : null, 
+          photographs: imageUrls,
           site: formData.get('site'),
           municipality_state: formData.get('municipality_state'),
           current_location: formData.get('current_location'),
