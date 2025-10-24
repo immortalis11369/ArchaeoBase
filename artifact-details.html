@@ -306,65 +306,101 @@
         const aliases = currentArtifact.alias || [];
         const tags = currentArtifact.tags || [];
 
+        
         const content = `
           <div class="artifact-header">
             <h1>${currentArtifact.name}</h1>
+            ${currentArtifact.registration_number ? `<p class="registration-number"><strong>Número de Registro:</strong> ${currentArtifact.registration_number}</p>` : ''}
           </div>
           
           <div class="artifact-info">
             ${currentArtifact.img ? `<img src="${currentArtifact.img}" alt="${currentArtifact.name}" class="artifact-image">` : ''}
+
+            <div class="info-grid">
+              ${currentArtifact.material ? `
+              <div class="info-item">
+                <strong>Material</strong>
+                <p>${currentArtifact.material}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.integrity ? `
+              <div class="info-item">
+                <strong>Integridade</strong>
+                <p>${currentArtifact.integrity}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.intervention ? `
+              <div class="info-item">
+                <strong>Intervenção</strong>
+                <p>${currentArtifact.intervention}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.measurements ? `
+              <div class="info-item">
+                <strong>Medidas</strong>
+                <p>${currentArtifact.measurements}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.weight ? `
+              <div class="info-item">
+                <strong>Peso</strong>
+                <p>${currentArtifact.weight}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.site ? `
+              <div class="info-item">
+                <strong>Sítio</strong>
+                <p>${currentArtifact.site}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.municipality_state ? `
+              <div class="info-item">
+                <strong>Município e Estado</strong>
+                <p>${currentArtifact.municipality_state}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.current_location ? `
+              <div class="info-item">
+                <strong>Localização Atual</strong>
+                <p>${currentArtifact.current_location}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.registrar ? `
+              <div class="info-item">
+                <strong>Responsável pelo Registro</strong>
+                <p>${currentArtifact.registrar}</p>
+              </div>
+              ` : ''}
+
+              ${currentArtifact.contact ? `
+              <div class="info-item">
+                <strong>Contato</strong>
+                <p>${currentArtifact.contact}</p>
+              </div>
+              ` : ''}
+            </div>
 
             <div class="info-item">
               <strong>Descrição</strong>
               <p>${currentArtifact.description || 'Sem descrição disponível.'}</p>
             </div>
 
-            ${aliases.length > 0 ? `
+            ${currentArtifact.references ? `
             <div class="info-item">
-              <strong>Também Conhecido Como</strong>
-              <div class="artifact-tags">
-                ${aliases.map(alias => `<span class="artifact-tag" data-search="${alias}">${alias}</span>`).join('')}
-              </div>
+              <strong>Referências</strong>
+              <p>${currentArtifact.references}</p>
             </div>
             ` : ''}
 
-            ${tags.length > 0 ? `
-            <div class="info-item">
-              <strong>Tags</strong>
-              <div class="artifact-tags">
-                ${tags.map(tag => `<span class="artifact-tag" data-search="${tag}">${tag}</span>`).join('')}
-              </div>
-            </div>
-            ` : ''}
-
-            ${currentArtifact.location ? `
-            <div class="info-item">
-              <strong>Localização</strong>
-              <p>${currentArtifact.location}</p>
-            </div>
-            ` : ''}
-
-            ${currentArtifact.period ? `
-            <div class="info-item">
-              <strong>Período</strong>
-              <p>${currentArtifact.period}</p>
-            </div>
-            ` : ''}
-          </div>
-
-          ${relatedItems.length > 0 ? `
-          <div class="related-section">
-            <h3>Artefatos Relacionados</h3>
-            <div class="related-grid">
-              ${relatedItems.map(artifact => `
-                <div class="related-item" onclick="location.href='artifact-details.html?id=${artifact.id}&searchterm=${encodeURIComponent(searchTerm)}'">
-                  <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}" class="related-image">
-                  <div class="related-name">${artifact.name}</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-          ` : ''}
+            // ... rest of your existing code for aliases and tags
         `;
 
         artifactContent.innerHTML = content;

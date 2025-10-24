@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .registration-form {
-      max-width: 800px;
+      max-width: 900px;
       margin: 120px auto 50px;
       padding: 2rem;
     }
@@ -33,7 +33,8 @@
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
       padding: 0.8rem;
       border: 1px solid rgba(231, 192, 63, 0.3);
@@ -44,15 +45,22 @@
     }
 
     .form-group textarea {
-      min-height: 100px;
+      min-height: 80px;
       resize: vertical;
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       outline: none;
       border-color: var(--gold-light);
       box-shadow: 0 0 10px rgba(231, 192, 63, 0.3);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
     }
 
     .file-preview {
@@ -116,6 +124,64 @@
       margin-bottom: 1rem;
       display: none;
     }
+
+    .form-group select {
+        width: 100%;
+        padding: 0.8rem 2.5rem 0.8rem 0.8rem;
+        border: 1px solid rgba(231, 192, 63, 0.3);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+        font-size: 1rem;
+        font-weight: 600;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e7c03f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.8rem center;
+        background-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--gold-light);
+        box-shadow: 0 0 10px rgba(231, 192, 63, 0.3);
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .form-group select:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+        border-color: rgba(231, 192, 63, 0.5);
+    }
+
+    .form-group select option {
+        background: #2a2a2a;
+        color: var(--white);
+        padding: 0.8rem;
+        font-weight: 600;
+    }
+
+    .form-group select option:checked {
+        background: linear-gradient(45deg, var(--gold-dark), #7a6c12);
+        color: white;
+    }
+
+    .form-group select option:hover {
+        background: var(--gold-light);
+        color: var(--black);
+    }
+
+
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -151,34 +217,116 @@
 
       <form id="artifactForm">
         <div class="form-group">
-          <label for="name">Nome do Artefato *</label>
-          <input type="text" id="name" name="name" required>
-          <div class="help-text">Nome principal do artefato (ex: "Lego 32140 Black")</div>
+          <label for="denomination">Denominação do Artefato *</label>
+          <input type="text" id="denomination" name="denomination" required>
+          <div class="help-text">Nome oficial ou denominação do artefato</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="registration_number">Número de Registro *</label>
+            <input type="text" id="registration_number" name="registration_number" required>
+          </div>
+
+          <div class="form-group">
+            <label for="material">Material *</label>
+            <input type="text" id="material" name="material" required>
+            <div class="help-text">Ex: Cerâmica, Pedra, Metal, Osso, etc.</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="integrity">Integridade *</label>
+            <select id="integrity" name="integrity" required>
+              <option value="">Selecione...</option>
+              <option value="Completo">Completo</option>
+              <option value="Fragmentado">Fragmentado</option>
+              <option value="Danificado">Danificado</option>
+              <option value="Restaurado">Restaurado</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="intervention">Sofreu Intervenção?</label>
+            <select id="intervention" name="intervention">
+              <option value="">Selecione...</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+              <option value="Desconhecido">Desconhecido</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="measurements">Medidas</label>
+            <input type="text" id="measurements" name="measurements" placeholder="Ex: 15x10x5 cm">
+          </div>
+
+          <div class="form-group">
+            <label for="weight">Peso</label>
+            <input type="text" id="weight" name="weight" placeholder="Ex: 250g">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="photographs">Fotografias</label>
+          <input type="file" id="photographs" name="photographs" accept="image/*" multiple>
+          <div class="help-text">Selecione uma ou mais fotografias (JPEG, PNG - Máx. 5MB cada)</div>
+          <div id="imagePreview" class="file-preview"></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="site">Sítio</label>
+            <input type="text" id="site" name="site">
+          </div>
+
+          <div class="form-group">
+            <label for="municipality_state">Município e Estado</label>
+            <input type="text" id="municipality_state" name="municipality_state" placeholder="Ex: São Paulo, SP">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="current_location">Localização Atual</label>
+          <input type="text" id="current_location" name="current_location">
+          <div class="help-text">Onde o artefato está armazenado atualmente</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="registrar">Responsável pelo Registro</label>
+            <input type="text" id="registrar" name="registrar">
+          </div>
+
+          <div class="form-group">
+            <label for="contact">Contato do Responsável</label>
+            <input type="text" id="contact" name="contact" placeholder="Email ou telefone">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="references">Referências</label>
+          <textarea id="references" name="references" placeholder="Referências bibliográficas, documentos relacionados..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição Detalhada *</label>
+          <textarea id="description" name="description" required placeholder="Descrição completa do artefato, características, estado de conservação..."></textarea>
         </div>
 
         <div class="form-group">
           <label for="alias">Apelidos/Aliases</label>
           <input type="text" id="alias" name="alias">
-          <div class="help-text">Separe com vírgulas (ex: "L 2x4, L Pequeno, Peça L")</div>
-        </div>
-
-        <div class="form-group">
-          <label for="description">Descrição *</label>
-          <textarea id="description" name="description" required></textarea>
-          <div class="help-text">Descrição detalhada do artefato</div>
-        </div>
-
-        <div class="form-group">
-          <label for="image">Imagem do Artefato</label>
-          <input type="file" id="image" name="image" accept="image/*">
-          <div class="help-text">Envie uma imagem do artefato (JPEG, PNG, WebP - Máx. 5MB)</div>
-          <div id="imagePreview" class="file-preview"></div>
+          <div class="help-text">Separe com vírgulas (ex: "Vaso cerâmico, Urna funerária")</div>
         </div>
 
         <div class="form-group">
           <label for="tags">Tags *</label>
           <input type="text" id="tags" name="tags" required>
-          <div class="help-text">Separe com vírgulas (ex: "lego, estrutural, L, preto")</div>
+          <div class="help-text">Separe com vírgulas (ex: "ceramica, neolitico, funerario")</div>
         </div>
 
         <button type="submit" class="submit-btn" id="submitBtn">Registrar Artefato</button>
@@ -205,27 +353,29 @@
       auth: { persistSession: false }
     });
 
-    const imageInput = document.getElementById('image');
+    const imageInput = document.getElementById('photographs');
     const imagePreview = document.getElementById('imagePreview');
 
     imageInput.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
+      const files = Array.from(e.target.files);
+      imagePreview.innerHTML = '';
+      
+      files.forEach(file => {
         if (file.size > 5 * 1024 * 1024) {
-          alert('A imagem deve ter no máximo 5MB');
-          imageInput.value = '';
-          imagePreview.innerHTML = '';
+          alert('Cada imagem deve ter no máximo 5MB');
           return;
         }
 
         const reader = new FileReader();
         reader.onload = function(e) {
-          imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '150px';
+          img.style.margin = '5px';
+          imagePreview.appendChild(img);
         }
         reader.readAsDataURL(file);
-      } else {
-        imagePreview.innerHTML = '';
-      }
+      });
     });
 
     const form = document.getElementById('artifactForm');
@@ -241,42 +391,59 @@
       submitBtn.textContent = 'Registrando...';
 
       const formData = new FormData(form);
-      const imageFile = imageInput.files[0];
+      const imageFiles = imageInput.files;
       
-      let imageUrl = null;
+      let imageUrls = [];
 
       try {
-        if (imageFile && imageFile.size > 0) {
+        if (imageFiles.length > 0) {
           uploadProgress.style.display = 'block';
           progressText.textContent = '0%';
           
-          const fileExt = imageFile.name.split('.').pop();
-          const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
-          
-          const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('artifact-images')
-            .upload(fileName, imageFile, {
-              cacheControl: '3600',
-              upsert: false
-            });
+          for (let i = 0; i < imageFiles.length; i++) {
+            const file = imageFiles[i];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}_${i}.${fileExt}`;
+            
+            const { data: uploadData, error: uploadError } = await supabase.storage
+              .from('artifact-images')
+              .upload(fileName, file, {
+                cacheControl: '3600',
+                upsert: false
+              });
 
-          if (uploadError) {
-            throw new Error(`Erro no upload da imagem: ${uploadError.message}`);
+            if (uploadError) {
+              throw new Error(`Erro no upload da imagem ${i+1}: ${uploadError.message}`);
+            }
+
+            const { data: urlData } = supabase.storage
+              .from('artifact-images')
+              .getPublicUrl(fileName);
+
+            imageUrls.push(urlData.publicUrl);
+            progressText.textContent = `${Math.round(((i + 1) / imageFiles.length) * 100)}%`;
           }
-
-          const { data: urlData } = supabase.storage
-            .from('artifact-images')
-            .getPublicUrl(fileName);
-
-          imageUrl = urlData.publicUrl;
           uploadProgress.style.display = 'none';
         }
 
         const artifactData = {
-          name: formData.get('name'),
+          name: formData.get('denomination'),
+          registration_number: formData.get('registration_number'),
+          material: formData.get('material'),
+          integrity: formData.get('integrity'),
+          intervention: formData.get('intervention'),
+          measurements: formData.get('measurements'),
+          weight: formData.get('weight'),
+          img: imageUrls.length > 0 ? imageUrls[0] : null, // Use first image as main
+          photographs: imageUrls, // Array of all images
+          site: formData.get('site'),
+          municipality_state: formData.get('municipality_state'),
+          current_location: formData.get('current_location'),
+          registrar: formData.get('registrar'),
+          contact: formData.get('contact'),
+          references: formData.get('references'),
           description: formData.get('description'),
-          tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t),
-          img: imageUrl
+          tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t)
         };
 
         const aliasInput = formData.get('alias');

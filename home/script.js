@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    return removeDuplicates(results);
+    return clean(results);
 }
 
 function handleAndSearch(querySlice) {
@@ -158,36 +158,64 @@ function handleAndSearch(querySlice) {
 			);
 	}
 
-		function matchesSearchTerm(artifact, term) {
-				const searchTerm = term.toLowerCase().trim();
-				const tagonly = searchTerm.startsWith('#');
-				const aliasonly = searchTerm.startsWith('@');
-				const cleanSearchTerm = searchTerm.replace(/^[@#]/, '');
-				
-				if (tagonly) {
-						return artifact.tags?.some(tag => 
-								tag.toLowerCase().includes(cleanSearchTerm)
-						);
-				}
-				
-				if (aliasonly) {
-						return artifact.alias?.some(alias => 
-								alias.toLowerCase().includes(cleanSearchTerm)
-						);
-				}
-				
-				return (
-						artifact.name?.toLowerCase().includes(searchTerm) ||
-						artifact.alias?.some(alias => alias.toLowerCase().includes(searchTerm)) ||
-						artifact.tags?.some(tag => tag.toLowerCase().includes(searchTerm))
-				);
-		}
+	function matchesSearchTerm(artifact, term) {
+        const searchTerm = term.toLowerCase().trim();
+        const tagonly = searchTerm.startsWith('#');
+        const aliasonly = searchTerm.startsWith('@');
+        const materialonly = searchTerm.startsWith('!');
+        const siteonly = searchTerm.startsWith('$');
+        const cleanSearchTerm = searchTerm.replace(/^[@#!$]/, '');
 
-		function removeDuplicates(results) {
-				return results.filter((artifact, index, self) => 
-						index === self.findIndex(a => a.id === artifact.id)
-				);
-		}
+        if (tagonly) {
+        return artifact.tags?.some(tag => 
+            tag.toLowerCase().includes(cleanSearchTerm)
+        );
+        }
+
+        if (aliasonly) {
+        return artifact.alias?.some(alias => 
+            alias.toLowerCase().includes(cleanSearchTerm)
+        );
+        }
+
+        if (materialonly) {
+        return artifact.material?.toLowerCase().includes(cleanSearchTerm);
+        }
+
+        if (siteonly) {
+        return artifact.site?.toLowerCase().includes(cleanSearchTerm);
+        }
+
+        // MEU DEUS QUE BAGULHO GIGANTE AAAAAAAAAAAA
+
+        // funçãozinha pra deixar menor
+        const checkLoop = asset => {
+            asset.toLowerCase.includes(searchTerm)
+        }
+
+        const check = asset => {
+            asset?.toLowerCase.includes(searchTerm)
+        }
+
+        return (
+            artifact.name?.toLowerCase().includes(searchTerm) ||
+            artifact.alias?.some(alias => checkLoop(alias)) ||
+            artifact.tags?.some(tag => checkLoop(tag)) ||
+            check(artifact.material) ||
+            check(artifact.description) ||
+            check(artifact.site) ||
+            check(artifact.municipality_state) ||
+            check(artifact.current_location) ||
+            check(artifact.registrar) ||
+            check(artifact.registration_number)
+        );
+    }
+
+    function clean(results) {
+        return results.filter((artifact, index, self) => 
+            index === self.findIndex(a => a.id === artifact.id)
+        );
+    }
 
     function displayResults(results, searchTerm) {
         if (!resultsContainer) {
@@ -215,14 +243,15 @@ function handleAndSearch(querySlice) {
             card.innerHTML = `
                 <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}" class="artifact-image-small">
                 <div class="artifact-content">
-                    <h3>${artifact.name || 'Sem nome'}</h3>
+                    <h3>${artifact.name || 'Indefinido'}</h3>
+                    ${artifact.registration_number ? `<p class="registration-number"><strong>Registro:</strong> ${artifact.registration_number}</p>` : ''}
+                    ${artifact.material ? `<p class="material"><strong>Material:</strong> ${artifact.material}</p>` : ''}
                     ${artifact.description ? `<p class="description">${artifact.description}</p>` : ''}
                     <div class="artifact-tags">
                         ${artifact.alias && artifact.alias.map(alias => `<span class="artifact-tag">${alias}</span>`).join('')}
                         ${artifact.tags && artifact.tags.map(tag => `<span class="artifact-tag">${tag}</span>`).join('')}
                     </div>
-                    ${artifact.location ? `<p class="location"><strong>Location:</strong> ${artifact.location}</p>` : ''}
-                    ${artifact.period ? `<p class="period"><strong>Period:</strong> ${artifact.period}</p>` : ''}
+                    ${artifact.site ? `<p class="site"><strong>Sítio:</strong> ${artifact.site}</p>` : ''}
                 </div>
             `;
             
