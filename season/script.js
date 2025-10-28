@@ -1,10 +1,8 @@
-// Navigation toggling for mobile menu
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
 const navbar = document.getElementById('navbar');
 
-// Initialize navigation functionality
 function initNavigation() {
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
@@ -15,7 +13,6 @@ function initNavigation() {
         });
     }
 
-    // Close mobile menu on link click and reset hamburger
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if (navMenu && navMenu.classList.contains('active')) {
@@ -29,7 +26,6 @@ function initNavigation() {
     });
 }
 
-// Update hamburger animation
 function updateHamburgerAnimation() {
     const hamburgers = navToggle.querySelectorAll('.hamburger');
     hamburgers.forEach((line, index) => {
@@ -44,7 +40,6 @@ function updateHamburgerAnimation() {
     });
 }
 
-// Reset hamburger animation
 function resetHamburgerAnimation() {
     const hamburgers = navToggle.querySelectorAll('.hamburger');
     hamburgers.forEach(line => {
@@ -53,7 +48,6 @@ function resetHamburgerAnimation() {
     });
 }
 
-// Active navigation highlighting
 function updateActiveNav() {
     const sections = document.querySelectorAll('section');
     const scrollPos = window.scrollY + 120;
@@ -76,7 +70,6 @@ function updateActiveNav() {
     });
 }
 
-// Update navbar background
 function updateNavbarBackground() {
     if (navbar) {
         navbar.style.background = 'var(--white)';
@@ -85,7 +78,6 @@ function updateNavbarBackground() {
     }
 }
 
-// Smooth scroll functionality
 function initSmoothScroll() {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -103,25 +95,21 @@ function initSmoothScroll() {
     });
 }
 
-// Adaptive timeline content sizing with emoji indicators
 function adjustTimelineContentSizes() {
     const timelineContents = document.querySelectorAll('.timeline-content');
     
     timelineContents.forEach(content => {
-        // Remove any existing size classes
         content.classList.remove('short', 'medium', 'long', 'extra-long');
         
-        // Calculate content length
         const textContent = content.textContent || content.innerText;
         const charCount = textContent.length;
         
-        // Determine content size class based on character count
         let sizeClass = 'medium';
-        let emoji = '📄'; // Default emoji
+        let emoji = '📄';
         
         if (charCount < 200) {
             sizeClass = 'short';
-            emoji = '📝'; // Memo for short content
+            emoji = '📝';
         } else if (charCount < 400) {
             sizeClass = 'medium';
             emoji = '📄';
@@ -130,12 +118,11 @@ function adjustTimelineContentSizes() {
             emoji = '🔎';
         } else {
             sizeClass = 'extra-long';
-            emoji = '📚'; // Books for extra long content
+            emoji = '📚';
         }
         
         content.classList.add(sizeClass);
         
-        // Create or update icon indicator
         let header = content.querySelector('.timeline-header');
         let title = content.querySelector('h3');
         
@@ -144,13 +131,11 @@ function adjustTimelineContentSizes() {
             header.className = 'timeline-header';
             content.insertBefore(header, content.firstChild);
             
-            // Move the title into the header
             if (title) {
                 header.appendChild(title);
             }
         }
         
-        // Create or update the emoji indicator
         let emojiIndicator = header.querySelector('.content-length-indicator');
         if (!emojiIndicator) {
             emojiIndicator = document.createElement('div');
@@ -158,14 +143,12 @@ function adjustTimelineContentSizes() {
             header.appendChild(emojiIndicator);
         }
         
-        // Update the emoji and class
         emojiIndicator.textContent = emoji;
         emojiIndicator.className = `content-length-indicator ${sizeClass}`;
-        emojiIndicator.title = `${sizeClass.replace('-', ' ')} content`; // Accessibility
+        emojiIndicator.title = `${sizeClass.replace('-', ' ')} content`;
     });
 }
 
-// Timeline animation on scroll
 function initTimelineAnimation() {
     const timelineItems = document.querySelectorAll('.timeline-item');
     
@@ -189,7 +172,6 @@ function initTimelineAnimation() {
     });
 }
 
-// Milestone cards animation
 function initMilestoneAnimation() {
     const milestoneCards = document.querySelectorAll('.milestone-card');
     
@@ -214,27 +196,23 @@ function initMilestoneAnimation() {
     });
 }
 
-// Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     updateActiveNav();
     updateNavbarBackground();
     initSmoothScroll();
     
-    // Initialize timeline with adaptive content sizing
     if (document.querySelector('.timeline')) {
         adjustTimelineContentSizes();
         initTimelineAnimation();
         initMilestoneAnimation();
     }
 
-    // Scroll events
     window.addEventListener('scroll', () => {
         updateActiveNav();
         updateNavbarBackground();
     });
 
-    // Handle page resize - re-adjust timeline content
     window.addEventListener('resize', () => {
         if (document.querySelector('.timeline')) {
             adjustTimelineContentSizes();
@@ -250,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Error handling for missing elements
 window.addEventListener('error', (e) => {
     console.log('Script loaded with minor issues:', e.message);
 });

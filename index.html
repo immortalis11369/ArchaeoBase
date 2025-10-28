@@ -6,141 +6,6 @@
   <title>ArchaeoBase by Immortalis</title>
   <link rel="stylesheet" href="home/style.css" />
   <link rel="icon" href="assets/logo.png" type="image/png">
-  <style>
-    .conveyor-belt {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(90deg, rgba(44, 62, 80, 0.8), rgba(231, 192, 63, 0.2), rgba(44, 62, 80, 0.8));
-      border: 3px solid var(--gold-light);
-      border-radius: 15px;
-      overflow: hidden;
-      margin: 2rem 0;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .belt-track {
-      position: absolute;
-      top: 25px;
-      left: 0;
-      width: 100%;
-      height: 150px;
-    }
-
-    .belt-item {
-      width: 120px;
-      height: 120px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid var(--gold-light);
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0.8rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: absolute;
-      backdrop-filter: blur(10px);
-      left: 100vw;
-      top: 0;
-    }
-
-    .belt-item:hover {
-      transform: translateY(-8px) scale(1.05);
-      background: rgba(231, 192, 63, 0.2);
-      box-shadow: 0 8px 20px rgba(231, 192, 63, 0.4);
-    }
-
-    .belt-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 0.4rem;
-      border: 1px solid var(--gold-dark);
-    }
-
-    .belt-item .artifact-name {
-      font-weight: bold;
-      color: var(--gold-light);
-      font-size: 0.75rem;
-      text-align: center;
-      margin: 0;
-      line-height: 1.1;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    @keyframes moveBelt {
-      0% {
-        left: 100vw;
-      }
-      100% {
-        left: -200px;
-      }
-    }
-
-    .belt-moving .belt-item {
-      animation: moveBelt 8s linear infinite;
-    }
-
-    .belt-moving .belt-item:nth-child(1) { animation-delay: 0s; }
-    .belt-moving .belt-item:nth-child(2) { animation-delay: 1.6s; }
-    .belt-moving .belt-item:nth-child(3) { animation-delay: 3.2s; }
-    .belt-moving .belt-item:nth-child(4) { animation-delay: 4.8s; }
-    .belt-item:nth-child(5) { animation-delay: 6.4s; }
-
-    .belt-paused .belt-item {
-      animation-play-state: paused;
-    }
-
-    .belt-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .belt-btn {
-      background: var(--gold-dark);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      font-size: 0.8rem;
-    }
-
-    .belt-btn:hover {
-      background: var(--gold-light);
-      color: var(--black);
-      transform: translateY(-2px);
-      box-shadow: 0 3px 10px rgba(231, 192, 63, 0.3);
-    }
-
-    .belt-edge {
-      position: absolute;
-      top: 0;
-      width: 50px;
-      height: 100%;
-      z-index: 2;
-    }
-
-    .belt-edge-left {
-      left: 0;
-      background: linear-gradient(90deg, rgba(44, 62, 80, 0.95), transparent);
-    }
-
-    .belt-edge-right {
-      right: 0;
-      background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.95));
-    }
-  </style>
 </head>
 <body>
   <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
@@ -184,19 +49,26 @@
     <div class="sections-bg vitrine-bg">
       <h2 id="vitrine-title">Vitrine</h2>
       <p id="vitrine-subtitle">
-        Confira artefatos registrados aleatórios!
+        Confira artefatos registrados!
       </p>
       
-      <div class="conveyor-belt" id="conveyorBelt">
-        <div class="belt-edge belt-edge-left"></div>
-        <div class="belt-edge belt-edge-right"></div>
-        <div class="belt-track" id="beltTrack">
+      <div class="vitrine-container">
+        <div class="vitrine-filters">
+          <div class="filter-group">
+            <label for="materialFilter">Filtrar por Material</label>
+            <select id="materialFilter">
+              <option value="">Todos os materiais</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="locationFilter">Filtrar por Cidade/Estado</label>
+            <input type="text" id="locationFilter" placeholder="Digite cidade ou estado...">
+          </div>
         </div>
-      </div>
-      
-      <div class="belt-controls">
-        <button class="belt-btn" id="pauseBelt">Pausar</button>
-        <button class="belt-btn" id="shuffleBelt">Embaralhar</button>
+        
+        <div class="artifacts-grid" id="artifactsGrid">
+        </div>
       </div>
     </div>
   </section>
@@ -213,131 +85,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module">
-    const SUPABASE_URL = 'https://kaefhycyvuwoozlwakfo.supabase.co'
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY'
-    
-    try {
-      if (typeof supabase === 'undefined') {
-        throw new Error('Biblioteca Supabase não carregada');
-      }
-      
-      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        auth: {
-          persistSession: false
-        }
-      });
-      
-      loadConveyorBelt();
-      
-    } catch (error) {
-      const errorElement = document.createElement('div');
-      errorElement.style.cssText = 'background: #ffebee; color: #c62828; padding: 10px; margin: 10px; border-radius: 4px;';
-      errorElement.innerHTML = '<strong>Erro de conexão:</strong> Não foi possível conectar ao banco de dados. Tente recarregar a página.';
-      document.body.prepend(errorElement);
-    }
-
-    async function loadConveyorBelt() {
-      try {
-        const { data: artifacts, error } = await window.supabase
-          .from('artifacts')
-          .select('*');
-
-        if (error) throw error;
-
-        if (artifacts && artifacts.length > 0) {
-          initializeConveyorBelt(artifacts);
-        }
-      } catch (error) {
-        console.error("Error while loading \"Vitrine\":", error)
-      }
-    }
-
-    function initializeConveyorBelt(artifacts) {
-      const beltTrack = document.getElementById('beltTrack');
-      const conveyorBelt = document.getElementById('conveyorBelt');
-      let currentItems = [];
-      let isPaused = false;
-      let animationInterval;
-
-      function getRandomArtifacts() {
-        const shuffled = [...artifacts].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 5);
-      }
-
-      function createBeltItem(artifact) {
-        const item = document.createElement('div');
-        item.className = 'belt-item';
-        item.setAttribute('data-id', artifact.id);
-        
-        item.innerHTML = `
-          <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}">
-          <p class="artifact-name">${artifact.name}</p>
-        `;
-        
-        item.addEventListener('click', () => {
-          const artifactId = item.getAttribute('data-id');
-          window.location.href = `artifact-details.html?id=${artifactId}`;
-        });
-
-        return item;
-      }
-
-      function updateBelt() {
-        // Remove all current items immediately
-        beltTrack.innerHTML = '';
-        
-        // Get new random items
-        currentItems = getRandomArtifacts();
-        
-        // Add new items with fresh animations
-        currentItems.forEach((artifact, index) => {
-          const item = createBeltItem(artifact);
-          beltTrack.appendChild(item);
-        });
-
-        // Force reflow to restart animations
-        conveyorBelt.classList.remove('belt-moving');
-        void conveyorBelt.offsetWidth; // Trigger reflow
-        conveyorBelt.classList.add('belt-moving');
-      }
-
-      // Initial load
-      updateBelt();
-
-      // Auto-shuffle every 15 seconds (faster reset)
-      animationInterval = setInterval(() => {
-        if (!isPaused) {
-          updateBelt();
-        }
-      }, 15000);
-
-      document.getElementById('pauseBelt').addEventListener('click', () => {
-        isPaused = !isPaused;
-        if (isPaused) {
-          conveyorBelt.classList.add('belt-paused');
-          document.getElementById('pauseBelt').textContent = 'Continuar';
-          clearInterval(animationInterval);
-        } else {
-          conveyorBelt.classList.remove('belt-paused');
-          document.getElementById('pauseBelt').textContent = 'Pausar';
-          // Restart the auto-shuffle interval
-          animationInterval = setInterval(() => {
-            if (!isPaused) {
-              updateBelt();
-            }
-          }, 15000);
-        }
-      });
-
-      document.getElementById('shuffleBelt').addEventListener('click', () => {
-        updateBelt();
-        if (isPaused) {
-          conveyorBelt.classList.add('belt-paused');
-        }
-      });
-    }
-  </script>
   <script src="home/script.js"></script>
 </body>
 </html>

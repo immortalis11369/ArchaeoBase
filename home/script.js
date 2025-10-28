@@ -1,3 +1,10 @@
+const URL = "https://kaefhycyvuwoozlwakfo.supabase.co";
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY';
+
+window.supabase = window.supabase.createClient(URL, KEY, {
+    auth: { persistSession: false }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
@@ -8,19 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const navbar = document.getElementById('navbar');
 
-		const urlparams = new URLSearchParams(window.location.search);
-		const searchParam = urlparams.get('search');
+    const urlparams = new URLSearchParams(window.location.search);
+    const searchParam = urlparams.get('search');
 
-		if (searchParam && searchInput) {
-			searchInput.value = searchParam;	
-			const searchEvent = new Event('submit', { bubbles: true });
-			searchForm.dispatchEvent(searchEvent);
-		}
+    if (searchParam && searchInput) {
+        searchInput.value = searchParam;    
+        const searchEvent = new Event('submit', { bubbles: true });
+        searchForm.dispatchEvent(searchEvent);
+    }
 
     let artifactsData = [];
-    let currentResults = [];
 
-    // Mobile menu functionality with hamburger animation
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
             const expanded = navToggle.getAttribute('aria-expanded') === 'true' || false;
@@ -41,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close mobile menu when nav link is clicked
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if (navMenu.classList.contains('active')) {
@@ -55,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Navbar background update
     function updateNavbarBackground() {
         if (navbar) {
             navbar.style.background = 'var(--white)';
@@ -64,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Gradient rotation effects
     function rotateGradient(titleElement, colorA, colorB, rotationSpeed) {
         if (!titleElement) return;
         
@@ -109,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Load artifacts from Supabase
     async function loadArtifacts() {
         try {
             const { data, error } = await window.supabase
@@ -126,39 +127,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Search functionality
     function searchArtifacts(query) {
-    if (!query.trim()) return [];
+        if (!query.trim()) return [];
 
-    let results = [];
-    const querySlices = query.split(", ");
-    
-    querySlices.forEach(querySlice => {
-        if (querySlice.includes('&')) {
-            results.push(...handleAndSearch(querySlice));
-        } else {  
-            results.push(...handleOrSearch(querySlice));
-        }
-    });
-    
-    return clean(results);
-}
+        let results = [];
+        const querySlices = query.split(", ");
+        
+        querySlices.forEach(querySlice => {
+            if (querySlice.includes('&')) {
+                results.push(...handleAndSearch(querySlice));
+            } else {  
+                results.push(...handleOrSearch(querySlice));
+            }
+        });
+        
+        return clean(results);
+    }
 
-function handleAndSearch(querySlice) {
-    const andTerms = querySlice.split('&').map(term => term.trim());
-    
-    return artifactsData.filter(artifact => {
-        return andTerms.every(term => matchesSearchTerm(artifact, term));
-    });
-}
+    function handleAndSearch(querySlice) {
+        const andTerms = querySlice.split('&').map(term => term.trim());
+        
+        return artifactsData.filter(artifact => {
+            return andTerms.every(term => matchesSearchTerm(artifact, term));
+        });
+    }
 
-	function handleOrSearch(querySlice) {
-			return artifactsData.filter(artifact => 
-					matchesSearchTerm(artifact, querySlice)
-			);
-	}
+    function handleOrSearch(querySlice) {
+        return artifactsData.filter(artifact => 
+            matchesSearchTerm(artifact, querySlice)
+        );
+    }
 
-	function matchesSearchTerm(artifact, term) {
+    function matchesSearchTerm(artifact, term) {
         const searchTerm = term.toLowerCase().trim();
         const tagonly = searchTerm.startsWith('#');
         const aliasonly = searchTerm.startsWith('@');
@@ -167,34 +167,31 @@ function handleAndSearch(querySlice) {
         const cleanSearchTerm = searchTerm.replace(/^[@#!$]/, '');
 
         if (tagonly) {
-        return artifact.tags?.some(tag => 
-            tag.toLowerCase().includes(cleanSearchTerm)
-        );
+            return artifact.tags?.some(tag => 
+                tag.toLowerCase().includes(cleanSearchTerm)
+            );
         }
 
         if (aliasonly) {
-        return artifact.alias?.some(alias => 
-            alias.toLowerCase().includes(cleanSearchTerm)
-        );
+            return artifact.alias?.some(alias => 
+                alias.toLowerCase().includes(cleanSearchTerm)
+            );
         }
 
         if (materialonly) {
-        return artifact.material?.toLowerCase().includes(cleanSearchTerm);
+            return artifact.material?.toLowerCase().includes(cleanSearchTerm);
         }
 
         if (siteonly) {
-        return artifact.site?.toLowerCase().includes(cleanSearchTerm);
+            return artifact.site?.toLowerCase().includes(cleanSearchTerm);
         }
 
-        // MEU DEUS QUE BAGULHO GIGANTE AAAAAAAAAAAA
-
-        // funçãozinha pra deixar menor
         const checkLoop = asset => {
-            asset.toLowerCase.includes(searchTerm)
+            return asset.toLowerCase().includes(searchTerm);
         }
 
         const check = asset => {
-            asset?.toLowerCase.includes(searchTerm)
+            return asset?.toLowerCase().includes(searchTerm);
         }
 
         return (
@@ -263,7 +260,6 @@ function handleAndSearch(querySlice) {
         });
     }
 
-    // detales do artefetuu
     function viewArtifactDetails(artifactId, searchTerm) {
         if (!artifactId) {
             alert('Erro: ID do artefato não encontrado');
@@ -301,7 +297,6 @@ function handleAndSearch(querySlice) {
             searchForm.addEventListener('submit', handleSearch);
         }
         
-        // Apply gradient effects
         const titleElement = document.getElementById('title');
         const subtitleElement = document.getElementById('subtitle');
         const btnSubmitElement = document.getElementById('btnSubmit');
@@ -313,10 +308,8 @@ function handleAndSearch(querySlice) {
         updateNavbarBackground();
     }
 
-    // Start the application
     initialize();
 
-    // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
