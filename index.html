@@ -4,143 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ArchaeoBase by Immortalis</title>
-  <link rel="stylesheet" href="home/style.css" />
+  <link rel="stylesheet" href="home/style.css"/>
   <link rel="icon" href="assets/logo.png" type="image/png">
-  <style>
-    .conveyor-belt {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(90deg, rgba(44, 62, 80, 0.8), rgba(231, 192, 63, 0.2), rgba(44, 62, 80, 0.8));
-      border: 3px solid var(--gold-light);
-      border-radius: 15px;
-      overflow: hidden;
-      margin: 2rem 0;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .belt-track {
-      position: absolute;
-      top: 25px;
-      left: 0;
-      width: 100%;
-      height: 150px;
-    }
-
-    .belt-item {
-      width: 120px;
-      height: 120px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid var(--gold-light);
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0.8rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: absolute;
-      backdrop-filter: blur(10px);
-      left: 100vw;
-      top: 0;
-    }
-
-    .belt-item:hover {
-      transform: translateY(-8px) scale(1.05);
-      background: rgba(231, 192, 63, 0.2);
-      box-shadow: 0 8px 20px rgba(231, 192, 63, 0.4);
-    }
-
-    .belt-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 0.4rem;
-      border: 1px solid var(--gold-dark);
-    }
-
-    .belt-item .artifact-name {
-      font-weight: bold;
-      color: var(--gold-light);
-      font-size: 0.75rem;
-      text-align: center;
-      margin: 0;
-      line-height: 1.1;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    @keyframes moveBelt {
-      0% {
-        left: 100vw;
-      }
-      100% {
-        left: -200px;
-      }
-    }
-
-    .belt-moving .belt-item {
-      animation: moveBelt 8s linear infinite;
-    }
-
-    .belt-moving .belt-item:nth-child(1) { animation-delay: 0s; }
-    .belt-moving .belt-item:nth-child(2) { animation-delay: 1.6s; }
-    .belt-moving .belt-item:nth-child(3) { animation-delay: 3.2s; }
-    .belt-moving .belt-item:nth-child(4) { animation-delay: 4.8s; }
-    .belt-item:nth-child(5) { animation-delay: 6.4s; }
-
-    .belt-paused .belt-item {
-      animation-play-state: paused;
-    }
-
-    .belt-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .belt-btn {
-      background: var(--gold-dark);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      font-size: 0.8rem;
-    }
-
-    .belt-btn:hover {
-      background: var(--gold-light);
-      color: var(--black);
-      transform: translateY(-2px);
-      box-shadow: 0 3px 10px rgba(231, 192, 63, 0.3);
-    }
-
-    .belt-edge {
-      position: absolute;
-      top: 0;
-      width: 50px;
-      height: 100%;
-      z-index: 2;
-    }
-
-    .belt-edge-left {
-      left: 0;
-      background: linear-gradient(90deg, rgba(44, 62, 80, 0.95), transparent);
-    }
-
-    .belt-edge-right {
-      right: 0;
-      background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.95));
-    }
-  </style>
 </head>
 <body>
   <nav class="navbar" id="navbar" role="navigation" aria-label="Menu principal">
@@ -192,11 +57,6 @@
         <div class="belt-edge belt-edge-right"></div>
         <div class="belt-track" id="beltTrack">
         </div>
-      </div>
-      
-      <div class="belt-controls">
-        <button class="belt-btn" id="pauseBelt">Pausar</button>
-        <button class="belt-btn" id="shuffleBelt">Embaralhar</button>
       </div>
     </div>
   </section>
