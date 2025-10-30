@@ -21,7 +21,7 @@ body {
   transition: background-color var(--transition-time) ease, color var(--transition-time) ease;
 }
 
-/* Navbar Logo Alignment Fix */
+ Navbar Logo Alignment Fix 
 .nav-logo {
   display: flex;
   flex-direction: row;
@@ -57,7 +57,6 @@ body {
   transition: all ease-in-out 0.2s;
 }
 
-/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -100,7 +99,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Menu */
+ Menu 
 .nav-menu {
   list-style: none;
   display: flex;
@@ -133,7 +132,6 @@ body {
   border-radius: 2px;
 }
 
-/* Responsive nav */
 @media (max-width: 768px) {
   .nav-toggle {
     display: flex !important;
@@ -162,7 +160,7 @@ body {
     padding: 0.8rem 1.5rem;
   }
 
-  /* Mobile logo adjustments */
+   Mobile logo adjustments 
   .nav-logo {
     gap: 8px;
     height: 40px;
@@ -178,7 +176,7 @@ body {
   }
 }
 
-/* Section Background containers */
+ Section Background containers 
 .sections-bg {
   max-width: 900px;
   margin: 140px auto 100px;
@@ -189,7 +187,7 @@ body {
   color: inherit;
 }
 
-/* Individual backgrounds */
+ Individual backgrounds 
 .intro-bg {
   background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
   color: #d4af37;
@@ -199,7 +197,7 @@ body {
   text-align: center;
 }
 
-/* Search form with medium-small input */
+ Search form with medium-small input 
 #intro form {
   display: flex;
   flex-direction: row;
@@ -238,7 +236,7 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-/* Button full width with rounded right corners */
+ Button full width with rounded right corners 
 #intro button {
   width: 40%;
   padding: 1rem 2rem;
@@ -261,13 +259,13 @@ body {
   filter: brightness(1.05);
 }
 
-/* Subtitle below input form */
+ Subtitle below input form 
 #intro #subtitle {
   font-size: 1.21rem;
   line-height: 1.2;
 }
 
-/* Headings and paragraphs */
+ Headings and paragraphs 
 .sections-bg h1, .sections-bg h2 {
   margin-top: 0;
   margin-bottom: 1.3rem;
@@ -287,7 +285,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* Search Results Styles */
+ Search Results Styles 
 .search-results {
   margin-top: 2rem;
   width: 100%;
@@ -366,7 +364,6 @@ body {
   font-style: italic;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .nav-toggle {
     display: flex !important;
@@ -414,7 +411,7 @@ body {
   }
 }
 
-/* Footer */
+ Footer 
 .footer-section {
   background: linear-gradient(135deg, #f9f9f9 0%, #e5e5e5 100%);
   color: #555;
@@ -455,4 +452,138 @@ body {
     font-size: 0.85rem;
     padding: 1rem 0.5rem;
   }
+}
+
+.conveyor-belt {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, rgba(44, 62, 80, 0.8), rgba(231, 192, 63, 0.2), rgba(44, 62, 80, 0.8));
+  border: 3px solid var(--gold-light);
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 2rem 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.belt-track {
+  position: absolute;
+  top: 25px;
+  left: 0;
+  width: 100%;
+  height: 150px;
+}
+
+.belt-item {
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--gold-light);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: absolute;
+  backdrop-filter: blur(10px);
+  left: 100vw;
+  top: 0;
+}
+
+.belt-item:hover {
+  transform: translateY(-8px) scale(1.05);
+  background: rgba(231, 192, 63, 0.2);
+  box-shadow: 0 8px 20px rgba(231, 192, 63, 0.4);
+}
+
+.belt-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  border: 1px solid var(--gold-dark);
+}
+
+.belt-item .artifact-name {
+  font-weight: bold;
+  color: var(--gold-light);
+  font-size: 0.75rem;
+  text-align: center;
+  margin: 0;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes moveBelt {
+  0% {
+    left: 100vw;
+  }
+  100% {
+    left: -200px;
+  }
+}
+
+.belt-moving .belt-item {
+  animation: moveBelt 8s linear infinite;
+}
+
+.belt-moving .belt-item:nth-child(1) { animation-delay: 0s; }
+.belt-moving .belt-item:nth-child(2) { animation-delay: 1.6s; }
+.belt-moving .belt-item:nth-child(3) { animation-delay: 3.2s; }
+.belt-moving .belt-item:nth-child(4) { animation-delay: 4.8s; }
+.belt-item:nth-child(5) { animation-delay: 6.4s; }
+
+.belt-paused .belt-item {
+  animation-play-state: paused;
+}
+
+.belt-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.belt-btn {
+  background: var(--gold-dark);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.belt-btn:hover {
+  background: var(--gold-light);
+  color: var(--black);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(231, 192, 63, 0.3);
+}
+
+.belt-edge {
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  z-index: 2;
+}
+
+.belt-edge-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(44, 62, 80, 0.95), transparent);
+}
+
+.belt-edge-right {
+  right: 0;
+  background: linear-gradient(90deg, transparent, rgba(44, 62, 80, 0.95));
 }
