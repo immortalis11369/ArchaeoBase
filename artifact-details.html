@@ -281,6 +281,19 @@
         height: 250px;
       }
     }
+
+    .artifact-registerer {
+      display: block;
+      font-size: 1.5em;
+      margin-block-start: 0.83em;
+      margin-block-end: 0.83em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      font-weight: bold;
+      unicode-bidi: isolate;
+      color: white;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -421,7 +434,7 @@
             <h1>${currentArtifact.name}</h1>
             ${currentArtifact.registration_number ? `<p class="registration-number"><strong>Número de Registro:</strong> ${currentArtifact.registration_number}</p>` : ''}
             ${currentArtifact.registrar ? `
-              <h3>
+              <h3 class="artifact-registerer">
                 <strong>Responsável pelo Registro</strong>
                 <p>${currentArtifact.registrar}</p>
               </h3>
