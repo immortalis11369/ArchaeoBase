@@ -1,8 +1,6 @@
 const URL = "https://kaefhycyvuwoozlwakfo.supabase.co";
 const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY'
-window.supabase = window.supabase.createClient(URL, KEY, {
-    auth: { persistSession: false }
-});
+window.supabase = window.supabase.createClient(URL, KEY);
 
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('searchForm');
