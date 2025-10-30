@@ -420,7 +420,13 @@
           <div class="artifact-header">
             <h1>${currentArtifact.name}</h1>
             ${currentArtifact.registration_number ? `<p class="registration-number"><strong>Número de Registro:</strong> ${currentArtifact.registration_number}</p>` : ''}
-          </div>
+            ${currentArtifact.registrar ? `
+              <h3>
+                <strong>Responsável pelo Registro</strong>
+                <p>${currentArtifact.registrar}</p>
+              </h3>
+              ` : ''}
+            </div>
           
           ${imagesHTML}
 
@@ -479,13 +485,6 @@
               <div class="info-item">
                 <strong>Localização Atual</strong>
                 <p>${currentArtifact.current_location}</p>
-              </div>
-              ` : ''}
-
-              ${currentArtifact.registrar ? `
-              <div class="info-item">
-                <strong>Responsável pelo Registro</strong>
-                <p>${currentArtifact.registrar}</p>
               </div>
               ` : ''}
 
