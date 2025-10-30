@@ -1,6 +1,7 @@
-const URL = "https://kaefhycyvuwoozlwakfo.supabase.co";
-const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY'
-window.supabase = window.supabase.createClient(URL, KEY);
+const SupabaseURL = "https://kaefhycyvuwoozlwakfo.supabase.co";
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZWZoeWN5dnV3b296bHdha2ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTc3NTAsImV4cCI6MjA3NjYzMzc1MH0.H5wpYD7UgU82Rxbzwo4ljxaGxwmkOxHekBlHe7SMUBY';
+const { createClient } = window.supabase;
+const supabase = createClient(SupabaseURL, KEY);
 
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('searchForm');
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     let artifactsData = [];
+    let currentResults = [];
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function loadArtifacts() {
         try {
-            const { data, error } = await window.supabase
+            const { data, error } = await supabase
                 .from('artifacts')
                 .select('*');
 
@@ -118,10 +120,89 @@ document.addEventListener('DOMContentLoaded', function() {
             
             artifactsData = data;
             console.log('Loaded artifacts:', artifactsData.length);
+            
+            loadVitrine();
         } catch (error) {
             console.error('Error loading artifacts:', error);
             alert('Erro ao carregar artefatos: ' + error.message);
         }
+    }
+
+    function loadVitrine() {
+        const artifactsGrid = document.getElementById('artifactsGrid');
+        const materialFilter = document.getElementById('materialFilter');
+        const locationFilter = document.getElementById('locationFilter');
+        
+        let filteredArtifacts = [...artifactsData].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        
+        const materials = [...new Set(artifactsData.map(a => a.material).filter(Boolean))];
+        materials.forEach(material => {
+            const option = document.createElement('option');
+            option.value = material;
+            option.textContent = material;
+            materialFilter.appendChild(option);
+        });
+        
+        function renderArtifacts() {
+            artifactsGrid.innerHTML = '';
+            
+            if (filteredArtifacts.length === 0) {
+                artifactsGrid.innerHTML = '<div class="vitrine-no-results">Nenhum artefato encontrado com os filtros aplicados</div>';
+                return;
+            }
+            
+            filteredArtifacts.forEach(artifact => {
+                const card = document.createElement('div');
+                card.className = 'vitrine-artifact-card';
+                card.setAttribute('data-id', artifact.id);
+                
+                card.innerHTML = `
+                    <img src="${artifact.img || 'assets/placeholder.jpg'}" alt="${artifact.name}" class="vitrine-artifact-image">
+                    <div class="vitrine-artifact-content">
+                        <h3 class="vitrine-artifact-name">${artifact.name}</h3>
+                        <div class="vitrine-artifact-details">
+                            ${artifact.material ? `<p class="vitrine-artifact-detail"><strong>Material:</strong> ${artifact.material}</p>` : ''}
+                            ${artifact.site ? `<p class="vitrine-artifact-detail"><strong>Sítio:</strong> ${artifact.site}</p>` : ''}
+                            ${artifact.municipality_state ? `<p class="vitrine-artifact-detail"><strong>Localização:</strong> ${artifact.municipality_state}</p>` : ''}
+                            ${artifact.registration_number ? `<p class="vitrine-artifact-detail"><strong>Nº de Registro:</strong> ${artifact.registration_number}</p>` : ''}
+                            ${artifact.created_at ? `<p class="vitrine-artifact-detail"><strong>Adicionado em:</strong> ${new Date(artifact.created_at).toLocaleDateString('pt-BR')}</p>` : ''}
+                        </div>
+                        <div class="vitrine-artifact-tags">
+                            ${artifact.alias && artifact.alias.map(alias => `<span class="vitrine-artifact-tag">${alias}</span>`).join('')}
+                            ${artifact.tags && artifact.tags.map(tag => `<span class="vitrine-artifact-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    const artifactId = card.getAttribute('data-id');
+                    window.location.href = `artifact-details.html?id=${artifactId}`;
+                });
+                
+                artifactsGrid.appendChild(card);
+            });
+        }
+        
+        renderArtifacts();
+        
+        function applyFilters() {
+            const materialValue = materialFilter.value;
+            const locationValue = locationFilter.value.toLowerCase();
+            
+            filteredArtifacts = artifactsData.filter(artifact => {
+                const materialMatch = !materialValue || artifact.material === materialValue;
+                const locationMatch = !locationValue || 
+                    (artifact.municipality_state && artifact.municipality_state.toLowerCase().includes(locationValue)) ||
+                    (artifact.site && artifact.site.toLowerCase().includes(locationValue));
+                    
+                return materialMatch && locationMatch;
+            }).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            
+            renderArtifacts();
+        }
+        
+        materialFilter.addEventListener('change', applyFilters);
+        locationFilter.addEventListener('input', applyFilters);
     }
 
     function searchArtifacts(query) {
