@@ -3,7 +3,7 @@ const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZi
 const { createClient } = window.supabase;
 const supabase = createClient(SupabaseURL, KEY);
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentResults = [];
 
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function() {
+        navToggle.addEventListener('click', () => {
             const expanded = navToggle.getAttribute('aria-expanded') === 'true' || false;
             navToggle.setAttribute('aria-expanded', !expanded);
             navMenu.classList.toggle('active');
